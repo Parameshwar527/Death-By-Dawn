@@ -257,10 +257,93 @@ small{color:#8e99dd}
 .cbtn{position:absolute;right:10%;top:50%;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff6a72,#b3121a);border:4px solid #ff9aa0;display:flex;align-items:center;justify-content:center;font:900 28px "Courier New",ui-monospace,monospace;letter-spacing:.1em;color:#fff;touch-action:none;box-shadow:0 6px 0 #4e090e}
 .cbtn.hit{transform:translateY(-50%) scale(.93);box-shadow:0 2px 0 #4e090e}
 @media (max-height:420px){#tTitle{font-size:15px}#tInstr{font-size:12px}#tHint{font-size:10px}.tpanel{padding:6px 10px}}
+/* ===== HORROR TASK SKIN (arcade/pixel): hard edges, offset shadows, Courier, see-through so the map shows behind ===== */
+#task{background:rgba(0,0,0,.18)}
+.tpanel{background:rgba(14,5,9,.66);border:2px solid #6e2a22;border-radius:2px;
+  box-shadow:0 0 0 2px #04051a,0 0 0 4px #6e1119,0 8px 0 4px rgba(0,0,0,.35);animation:tflick 6s steps(1) infinite;overflow:hidden}
+.tpanel::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px),
+    linear-gradient(#4a2a22,#4a2a22) 5px 5px/6px 6px no-repeat,linear-gradient(#4a2a22,#4a2a22) calc(100% - 5px) 5px/6px 6px no-repeat,
+    linear-gradient(#4a2a22,#4a2a22) 5px calc(100% - 5px)/6px 6px no-repeat,linear-gradient(#4a2a22,#4a2a22) calc(100% - 5px) calc(100% - 5px)/6px 6px no-repeat}
+.tpanel::after{content:'';position:absolute;left:0;right:0;top:0;height:44px;pointer-events:none;z-index:1;transform-origin:top;animation:tdrip 6s steps(7) infinite alternate;
+  background:linear-gradient(#a0101a,#a0101a) 14% 0/6px 20px no-repeat,linear-gradient(#a0101a,#a0101a) calc(14% - 2px) 20px/10px 4px no-repeat,
+    linear-gradient(#a0101a,#a0101a) 41% 0/4px 32px no-repeat,linear-gradient(#a0101a,#a0101a) calc(41% - 2px) 32px/8px 4px no-repeat,
+    linear-gradient(#a0101a,#a0101a) 72% 0/6px 14px no-repeat,linear-gradient(#a0101a,#a0101a) calc(72% - 2px) 14px/10px 4px no-repeat,
+    linear-gradient(#a0101a,#a0101a) 91% 0/4px 26px no-repeat,linear-gradient(#a0101a,#a0101a) calc(91% - 2px) 26px/8px 4px no-repeat}
+.thead,#tBody{position:relative;z-index:2}
+#tDone{position:absolute;inset:0;z-index:3}
+.tpanel.win{border-color:#7dff5a;box-shadow:0 0 0 2px #04051a,0 0 0 4px #1d4a12,0 8px 0 4px rgba(0,0,0,.35);animation:none}
+@keyframes tflick{0%,100%{opacity:1}90%{opacity:.82}92%{opacity:1}96%{opacity:.9}97%{opacity:1}}
+@keyframes tdrip{from{transform:scaleY(.55)}to{transform:scaleY(1.15)}}
+@keyframes tshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes tbeat{0%,100%{transform:translateY(-50%) scale(1)}12%{transform:translateY(-50%) scale(1.07)}24%{transform:translateY(-50%) scale(1)}36%{transform:translateY(-50%) scale(1.045)}}
+@keyframes tbeat2{0%,100%{box-shadow:0 0 0 3px #0c0605}50%{box-shadow:0 0 0 3px #d11a2a}}
+#tTitle{font:900 20px "Courier New",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:#efe3c8;text-shadow:2px 2px 0 #b3121a,4px 4px 0 #3a060b}
+#tInstr{color:#cdb99a;font-family:"Courier New",ui-monospace,monospace;font-weight:700}
+#tHint{color:#9a7f6a}
+#tQuit{background:#2a0e0f;border:2px solid #b3121a;color:#efe3c8;box-shadow:0 3px 0 #4e090e;border-radius:3px}
+#tDone{color:#7dff5a;text-shadow:4px 4px 0 #0d2a06;background:rgba(0,10,4,.35)}
+/* wires: grimy electrical terminals, live wires crackle once connected */
+.wsvg path{shape-rendering:crispEdges;stroke-linecap:square;filter:drop-shadow(0 3px 0 rgba(0,0,0,.6))}
+.wsvg path.live{animation:tzap .3s steps(1) infinite}
+@keyframes tzap{0%{stroke-opacity:1}50%{stroke-opacity:.55}}
+.wn{position:relative;border-radius:4px;border:3px solid #6b6f7a;box-shadow:inset -5px -5px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.2),0 0 0 3px #0c0605}
+.wn::after{content:'';position:absolute;left:24%;right:24%;top:calc(50% - 2px);height:4px;background:rgba(0,0,0,.6);transform:rotate(-30deg)}
+.wn.ok{opacity:1;animation:tspark 1s steps(1) infinite}
+@keyframes tspark{0%,100%{box-shadow:inset -5px -5px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.2),0 0 0 3px #0c0605}50%{box-shadow:inset -5px -5px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.2),0 0 0 3px #ffe94a}}
+/* containment tubes */
+.ftrack{background:#070b07;border:3px solid #4a3a30;border-radius:4px;box-shadow:inset 0 4px 0 rgba(0,0,0,.6),0 0 0 2px #0c0605}
+.fband{background:rgba(125,255,90,.16);border:2px dashed #4a8f36;border-radius:2px}
+.fband.lit{background:#5fd13f;border:2px solid #b8ff9a;box-shadow:none}
+.fknob{border-radius:3px;background:#7a4a30;border:3px solid #1a0c08;box-shadow:inset -5px -5px 0 rgba(0,0,0,.4),inset 3px 3px 0 rgba(255,255,255,.18),0 3px 0 #0a0404}
+.fknob::before,.fknob::after{content:'';position:absolute;left:50%;top:50%;background:#150805}
+.fknob::before{width:60%;height:4px;margin:-2px 0 0 -30%}.fknob::after{width:4px;height:60%;margin:-30% 0 0 -2px}
+/* ritual sigils */
+.sstat{color:#cdb99a;font-family:"Courier New",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.14em}
+.spad{border-radius:4px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.65);opacity:.45;background:var(--c);
+  border:4px solid #1a0c08;box-shadow:inset -8px -8px 0 rgba(0,0,0,.35),inset 6px 6px 0 rgba(255,255,255,.15),0 4px 0 #0a0405}
+.spad svg{width:52%;height:52%;stroke:currentColor;fill:none;stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;shape-rendering:crispEdges}
+.spad.lit{opacity:1;color:#fff;border-color:#efe3c8;box-shadow:inset -8px -8px 0 rgba(0,0,0,.25),0 0 0 4px var(--c),0 4px 0 4px #0a0405}
+.spad.bad{background:#7a0a12;opacity:.95;animation:tshake .16s steps(2) 3}
+/* energize: hazard-striped plate + arcade cap; current arcs jump from the tank to the button as it charges */
+.egauge{position:absolute;left:8%;top:6px;bottom:26px;width:clamp(34px,10vmin,52px);background:#0d0c06;border:3px solid #6b6f7a;border-radius:3px;overflow:hidden;box-shadow:inset 0 4px 0 rgba(0,0,0,.6),0 0 0 2px #0c0605;--e1:#a8741a;--e2:#4a3208}
+.egauge.mid{--e1:#ffe94a;--e2:#8a7410}
+.egauge.hi{--e1:#fffbd0;--e2:#e8c93a;animation:tflash .22s steps(1) infinite}
+.egauge.warn{border-color:#e0302f;animation:twarn .5s steps(1) infinite}
+@keyframes twarn{50%{border-color:#6b6f7a}}
+@keyframes tflash{50%{filter:brightness(1.35)}}
+.efill{position:absolute;left:0;right:0;bottom:0;height:0;background:repeating-linear-gradient(0deg,var(--e1) 0 10px,var(--e2) 10px 12px)}
+.epct{position:absolute;left:0;right:0;top:50%;text-align:center;font-size:12px;transform:translateY(-50%);color:#fff;text-shadow:2px 2px 0 #000}
+.elamps{position:absolute;top:6px;bottom:26px;width:10px;display:flex;flex-direction:column-reverse;justify-content:space-between}
+.elamps i{display:block;height:8%;background:#1a1608;border:1px solid #3a3320}
+.elamps i.on{background:#ffe94a;border-color:#fffbd0;box-shadow:0 0 0 1px #8a7410}
+.earc{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;opacity:0}
+.earc polyline{fill:none;stroke-linejoin:miter;shape-rendering:crispEdges}
+.earc .a1,.earc .b1{stroke:#ffe94a;stroke-width:6;stroke-opacity:.55}
+.earc .a2,.earc .b2{stroke:#fffbd0;stroke-width:2}
+.ebase{position:absolute;right:8%;top:calc(50% - 12px);transform:translateY(-50%);touch-action:none;
+  background:repeating-linear-gradient(45deg,#e8c93a 0 10px,#1a1400 10px 20px);border:3px solid #0c0605;box-shadow:inset -6px -6px 0 rgba(0,0,0,.35),0 6px 0 #0c0605}
+.ebase::before{content:'';position:absolute;inset:11%;background:#0a0804;border:3px solid #3a3320;box-shadow:inset 0 6px 0 rgba(0,0,0,.7)}
+.ebase.hot{animation:ejit .2s steps(1) infinite}
+@keyframes ejit{0%,100%{transform:translateY(-50%)}25%{transform:translateY(-50%) translateX(-2px)}75%{transform:translateY(-50%) translateX(2px)}}
+.ecap{position:absolute;inset:19%;transform:translateY(-6px);filter:drop-shadow(0 6px 0 #5a4a08)}
+.ecap.hit{transform:translateY(0);filter:drop-shadow(0 1px 0 #5a4a08) brightness(1.2)}
+.ebtn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#2a1f00;font:900 22px "Courier New",ui-monospace,monospace;letter-spacing:.12em;text-shadow:2px 2px 0 rgba(255,255,255,.35);
+  background:linear-gradient(135deg,#fff7a0 0 14%,#ffe94a 14% 66%,#c9a812 66%);clip-path:polygon(18% 0,82% 0,100% 18%,100% 82%,82% 100%,18% 100%,0 82%,0 18%)}
+.ebtn svg{width:34%;height:34%;fill:#2a1f00}
+.espk{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;background:#fffbd0;box-shadow:0 0 0 2px #ffe94a;pointer-events:none;z-index:4;animation:espk .36s steps(5) forwards}
+@keyframes espk{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+.estat{position:absolute;left:0;right:0;bottom:0;height:20px;text-align:center;font:800 12px "Courier New",ui-monospace,monospace;letter-spacing:.14em;color:#cdb99a;text-shadow:2px 2px 0 #000}
+@media (max-height:420px){#tTitle{font-size:15px}.tpanel::after{height:30px}}
+
 
 #itm{pointer-events:auto;width:62px;height:62px;min-width:62px;min-height:62px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border-radius:50%;background:rgba(8,12,34,.86);border:3px solid var(--ic,#fff);box-shadow:0 0 14px var(--ic,#fff),0 2px 10px rgba(0,0,0,.6);font-family:"Courier New",ui-monospace,monospace;color:#fff}
 #itm:active{transform:scale(.94)}
 #itm img{width:34px;height:34px;image-rendering:pixelated;pointer-events:none}
+#itmT{position:absolute;left:0;right:0;text-align:center;bottom:calc(var(--atk) + var(--ctx) + 24px + 62px + 3px);font:800 15px/1 "Courier New",ui-monospace,monospace;color:var(--ic,#fff);text-shadow:0 0 6px rgba(0,0,0,.9),0 1px 0 #000,1px 0 0 #000,-1px 0 0 #000,0 -1px 0 #000;pointer-events:none}   /* LAST STAND: 3-2-1 before the held item re-rolls */
+#itmT.pop{animation:itmPop .24s ease-out}
+@keyframes itmPop{from{transform:scale(1.55);opacity:.55}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){#itmT.pop{animation:none}}
 #itm span{font-size:8px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-top:1px;pointer-events:none}
 #flashOv{position:absolute;inset:0;z-index:16;pointer-events:none;opacity:0;background:#fff}
 .note{position:absolute;z-index:9;left:0;right:0;text-align:center;pointer-events:none;opacity:0;font-family:"Courier New",ui-monospace,monospace;font-weight:900;letter-spacing:.08em;text-shadow:0 2px 14px #000,0 0 18px currentColor}
@@ -289,12 +372,12 @@ small{color:#8e99dd}
  <div id="dead" class="hidden">You were sacrificed<small>Spectating the survivors…</small></div>
  <div id="hitFlash"></div><div id="hitBanner"></div><div id="gann" class="hidden">GENERATORS POWERED - GATES OPEN</div><div id="pann" class="hidden"></div><div id="lsann" class="hidden"></div>
  <div id="hint"></div><div id="base"><div id="knob"></div></div><div id="zone"></div>
- <div id="acts"><button id="atk" class="act hidden">ATTACK</button><button id="ctx" class="act hidden"></button><button id="itm" class="hidden"><img id="itmI" alt=""><span id="itmN"></span></button></div>
+ <div id="acts"><button id="atk" class="act hidden">ATTACK</button><button id="ctx" class="act hidden"></button><button id="itm" class="hidden"><img id="itmI" alt=""><span id="itmN"></span></button><span id="itmT" class="hidden"></span></div>
  <div id="flashOv"></div><div id="noteBy" class="note"></div><div id="noteVic" class="note"></div>
  <div id="ov" class="hidden"><div id="ovT"></div><div id="ovS"></div><div id="ovM"></div><div id="ovN"></div></div>
  <div id="sel" class="hidden"><div id="selH"><div id="selT"></div><div id="selTag"></div></div><div id="selCd"><div id="selN"></div><div id="selBar"><i></i></div></div><div id="selCards"></div><div id="selAct"><button id="selLock">Lock in</button><div id="selWait"></div></div><div id="selReady"></div></div>
  <canvas id="mm" class="hidden"></canvas>
- <div id="task" class="hidden"><div class="tpanel" id="tpanel"><div class="thead"><div class="ttxt"><b id="tTitle"></b><span id="tInstr"></span><small id="tHint">Leave any time, nothing is lost</small></div><button id="tQuit">✕ Quit</button></div><div id="tBody"></div><div id="tDone" class="hidden">✓</div></div></div>
+ <div id="task" class="hidden"><div class="tpanel" id="tpanel"><div class="thead"><div class="ttxt"><b id="tTitle"></b><span id="tInstr"></span><small id="tHint">Leave any time, nothing is lost</small></div><button id="tQuit">✕ Flee</button></div><div id="tBody"></div><div id="tDone" class="hidden">✓</div></div></div>
  <div id="menuBack" class="hidden"></div>
  <div id="menuPanel" class="hidden"><button id="mMute" class="sec"></button><button id="mAmb" class="sec"></button><button id="mFx" class="sec"></button><button id="mBright" class="sec"></button><button id="mMap" class="sec"></button><button id="mTasks" class="sec hidden">Complete task set</button><button id="mGenFix" class="sec hidden">Fix next generator</button><button id="mGenKick" class="sec hidden">Kick nearest generator</button><button id="mFull" class="sec hidden">Fullscreen</button><button id="mEnd" class="sec hidden">End round</button><button id="mLeave" class="sec">Leave</button></div>
  <div id="confirm" class="hidden"><div class="box"><b id="cfT"></b><span id="cfS">Are you sure?</span><div class="brow"><button id="cfYes" class="bad">Yes</button><button id="cfNo" class="sec">Cancel</button></div></div></div>
@@ -304,7 +387,7 @@ small{color:#8e99dd}
 <script>
 'use strict';
 /* ================= CONFIG (all tunables here) ================= */
-const GAME_VERSION = 28;                 // bump when a change breaks compatibility
+const GAME_VERSION = 29;                 // bump when a change breaks compatibility
 const ROOM_PREFIX  = 'deathbydawn-';
 const CODE_CHARS   = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const PEER_CONFIG  = { config: { iceServers: [
@@ -403,7 +486,7 @@ const CFG = {
   GATE_HOLD_MS: 2000, GATE_R: 110,      // endgame: stand in the glow (GATE_R deep, as long as the gate) in front of an open gate this long to escape
   MONSTER_DELAY_MS: 5000, MONSTER_SPEED_MULT: 1.3, MONSTER_SLOW_MULT: 0.5,   // MONSTER FORM (killer status): starts MONSTER_DELAY_MS after the gates open. While active: killer speed x MONSTER_SPEED_MULT (+30%), the post-swing slow multiplier is MONSTER_SLOW_MULT (0.5 = 50% slow, instead of ATTACK_SLOW_MULT = 90% slow), any hit downs a survivor in one go, and the killer sees everyone in pulses (EG_SEE_*)
   CARRY_BOOST_MULT: 1.3,   // LAST STAND + full MONSTER FORM: extra speed multiplier (+30%) while the killer carries a survivor
-  SOLO_MS: 70000, SOLO_SPEED_MULT: 1.15, SOLO_SLOW_MULT: 0.25, SOLO_REROLL_MS: 10000, SOLO_GIVE_MS: 12000,   // LAST SURVIVOR sequence: one survivor left (gates still shut) => they must survive SOLO_MS; the killer gets a NERFED monster form (+15% speed, swing slow multiplier 0.25, no sight pulses, no one-hit down) until the gates open (then the full monster form takes over); the sequence is called LAST STAND: a player holding an item has it re-rolled to a different random one every SOLO_REROLL_MS, an empty-handed player gets a random one after SOLO_GIVE_MS
+  SOLO_MS: 70000, SOLO_WARN_MS: 3000, SOLO_SPEED_MULT: 1.15, SOLO_SLOW_MULT: 0.25, SOLO_REROLL_MS: 10000, SOLO_GIVE_MS: 12000,   // LAST SURVIVOR sequence: one survivor left (gates still shut) => they must survive SOLO_MS; the killer gets a NERFED monster form (+15% speed, swing slow multiplier 0.25, no sight pulses, no one-hit down) until the gates open (then the full monster form takes over); the sequence is called LAST STAND: a player holding an item has it re-rolled to a different random one every SOLO_REROLL_MS, an empty-handed player gets a random one after SOLO_GIVE_MS
   GEN_NEEDED: 2,                       // generators that must be fixed (the rest lock and reset)
   GEN_R: 90,                           // reach for REPAIR / KICK (the host allows +ACT_SLACK on top)
   GEN_BEACON_R: 700, GEN_BEACON_FADE: 150,   // yellow beacon on OPEN generators (survivors): only within this distance of the viewed player, fading in over the last GEN_BEACON_FADE units
@@ -1188,6 +1271,10 @@ let EG = egEmpty();
 function egPack() { return { on: EG.on, final: EG.final, left: EG.on && !EG.final ? Math.max(0, Math.round(EG.dawnEnd - performance.now())) : 0, solo: EG.solo, sleft: EG.solo ? Math.max(0, Math.round(EG.soloEnd - performance.now())) : 0 }; }
 function egSend() { const m = Object.assign({ t: 'eg' }, egPack()); T.broadcast(m); applyEg(m, false); }
 function egStart() { if (EG.on) return; EG.on = true; EG.final = false; EG.dawnEnd = performance.now() + CFG.MONSTER_DELAY_MS; egSend(); }
+function rrSend(p, now) {   // LAST STAND: tell the player how long until THEIR held item re-rolls (p.sNext lives on the host only), so the client can show the 3-2-1
+  if (p.bot || !p.item) return; const ms = Math.max(0, Math.round(p.sNext - now));
+  if (p.host) S.itemRrAt = performance.now() + ms; else if (p.connId) T.sendTo(p.connId, { t: 'itr', ms });
+}
 function soloStep(now) {   // LAST SURVIVOR: exactly one survivor alive (hooked ones count as alive) and the gates still shut => 70 s survive sequence
   if (!EG.solo) {
     if (EG.soloUsed || EG.on) return;
@@ -1197,9 +1284,9 @@ function soloStep(now) {   // LAST SURVIVOR: exactly one survivor alive (hooked 
   }
   for (const p of HP.values()) {   // LAST STAND items: holding one => it re-rolls to a different one every SOLO_REROLL_MS; empty hands => a new one after SOLO_GIVE_MS (the timer restarts whenever the item changes, e.g. after using it)
     if (!p.on || !p.role || p.st === 'dead') continue;
-    if (p.sSeen !== p.item || !p.sNext) { p.sSeen = p.item; p.sNext = now + (p.item ? CFG.SOLO_REROLL_MS : CFG.SOLO_GIVE_MS); }
+    if (p.sSeen !== p.item || !p.sNext) { p.sSeen = p.item; p.sNext = now + (p.item ? CFG.SOLO_REROLL_MS : CFG.SOLO_GIVE_MS); rrSend(p, now); }
     if (now < p.sNext) continue;
-    const opts = ITEMS.filter(it => it.id !== p.item); p.item = opts[Math.floor(Math.random() * opts.length)].id; p.itemAt = now; p.sSeen = p.item; p.sNext = now + CFG.SOLO_REROLL_MS; sendItem(p);
+    const opts = ITEMS.filter(it => it.id !== p.item); p.item = opts[Math.floor(Math.random() * opts.length)].id; p.itemAt = now; p.sSeen = p.item; p.sNext = now + CFG.SOLO_REROLL_MS; sendItem(p); rrSend(p, now);
   }
   if (now >= EG.soloEnd) {   // time's up: the solo survivor wins unless hooked/dead (downed or carried still counts)
     EG.solo = false; egSend();
@@ -1507,7 +1594,7 @@ function sxSend(id, k, ms) { const m = { t: 'sx', id, k, ms }; T.broadcast(m); t
 function msgTo(p, text) { if (p.bot) return; if (p.host) toast(text); else if (p.connId) T.sendTo(p.connId, { t: 'msg', m: text }); }
 function sendItem(p) {
   if (p.bot) return; const i = p.item ? ITEMS.findIndex(x => x.id === p.item) : -1;
-  if (p.host) { S.item = i >= 0 ? p.item : null; if (i >= 0) toast('Got ' + ITEMS[i].name + ' - tap the item button'); }
+  if (p.host) { S.item = i >= 0 ? p.item : null; S.itemRrAt = 0; if (i >= 0) toast('Got ' + ITEMS[i].name + ' - tap the item button'); }
   else if (p.connId) T.sendTo(p.connId, { t: 'it', i });
 }
 function circleHits(x, y, r) {
@@ -1709,7 +1796,8 @@ function clientMsg(m) {
     case 'tgo': openTask(m); break;                      // my task request was accepted {id, type, size}
     case 'tno': closeTask(m.why || ''); break;           // my task was interrupted / released by the host
     case 'wo': applyWo(m.k, m.a, false); break;
-    case 'it': S.item = ITEMS[m.i] ? ITEMS[m.i].id : null; if (S.item) toast('Got ' + ITEMS[m.i].name + ' - tap the item button'); break;
+    case 'itr': S.itemRrAt = performance.now() + (+m.ms || 0); break;
+    case 'it': S.itemRrAt = 0; S.item = ITEMS[m.i] ? ITEMS[m.i].id : null; if (S.item) toast('Got ' + ITEMS[m.i].name + ' - tap the item button'); break;
     case 'sx': applySx(m); break;
     case 'ev': onEv(m); break;
     case 'msg': toast(m.m); break;
@@ -1788,7 +1876,7 @@ function applyEg(m, quiet) {   // endgame state from the host: gates open + dawn
 function hookRemain(st, now) { return st.hookEnd - (st.rpOn && st.holdAt ? st.holdAt : now); }   // ms left on the hook timer; frozen while a rescue is in progress
 function applyRp(m) { const o = S.st[m.id]; if (!o) return; const nw = performance.now(); if (m.on && !o.rpOn) o.holdAt = nw; else if (!m.on && o.rpOn && o.holdAt) { o.hookEnd += nw - o.holdAt; o.holdAt = 0; } o.rp = +m.p || 0; o.rpAt = performance.now(); o.rpOn = !!m.on; o.rr = +m.r || 1; }
 function setCd(ms) { S.cdEnd = performance.now() + ms; S.cdTot = ms; }
-function clearRoundState() { S.pick = {}; S.ts = tsEmpty(); S.gs = gcEmpty(); S.ds = dcEmpty(); S.gping = {}; S.powAt = 0; S.monAt = 0; S.pannAt = 0; S.lsAt = 0; S.sightAt = 0; S.eg = { on: false, final: false, endAt: 0, solo: false, soloAt: 0 }; S.res = null; S.gateT0 = 0; EG = egEmpty(); genHumStopAll(); closeTask(''); S.st = {}; S.spec = -1; S.sacAt = 0; S.cdEnd = S.cdTot = 0; TRAIL.clear(); TERROR.clear(); FX.length = 0; for (const k in AN) delete AN[k]; for (const k in LAUGH) delete LAUGH[k]; S.item = null; S.wo = woEmpty(); S.smokeW = []; S.smSig = ''; S.fx2 = {}; S.blindEnd = 0; IFX.length = 0; ALERTS.length = 0; ctxRelease(); }
+function clearRoundState() { S.pick = {}; S.ts = tsEmpty(); S.gs = gcEmpty(); S.ds = dcEmpty(); S.gping = {}; S.powAt = 0; S.monAt = 0; S.pannAt = 0; S.lsAt = 0; S.sightAt = 0; S.itemRrAt = 0; S.eg = { on: false, final: false, endAt: 0, solo: false, soloAt: 0 }; S.res = null; S.gateT0 = 0; EG = egEmpty(); genHumStopAll(); closeTask(''); S.st = {}; S.spec = -1; S.sacAt = 0; S.cdEnd = S.cdTot = 0; TRAIL.clear(); TERROR.clear(); FX.length = 0; for (const k in AN) delete AN[k]; for (const k in LAUGH) delete LAUGH[k]; S.item = null; S.wo = woEmpty(); S.smokeW = []; S.smSig = ''; S.fx2 = {}; S.blindEnd = 0; IFX.length = 0; ALERTS.length = 0; ctxRelease(); }
 function startReconnect() {
   if (S.reconnecting || S.leaving) return;
   S.reconnecting = true; S.reconnectUntil = Date.now() + CFG.RECONNECT_WINDOW; banner('Reconnecting to host…'); rejoinLoop();
@@ -2143,7 +2231,7 @@ function pickView() {   // whose eyes the camera uses: me, or (when dead) the sp
 }
 
 /* ================= TASK MINIGAMES (client side; the host only checks the claim, distance and a minimum time) ================= */
-const TASK_INFO = { wires: ['Wires', 'Match the colours'], fuses: ['Fuses', 'Slide each fuse into the green'], simon: ['Pattern', 'Repeat the pattern'], charge: ['Charge', 'Tap fast to charge'] };
+const TASK_INFO = { wires: ['Wires', 'Connect the matching colours'], fuses: ['Containment', 'Slide each valve into the glow'], simon: ['The Ritual', 'Repeat the sigils'], charge: ['Energize', 'Tap fast to power it up'] };
 const clampN = (v, a, b) => Math.max(a, Math.min(b, v));
 function later(fn, ms) { const k = TK, id = setTimeout(() => { if (TK === k) fn(); }, ms); if (k) k.timers.push(id); return id; }   // timers die with the overlay
 function sfxTaskDone() { sfxTone(660, 660, .35, .22, 'sine'); sfxTone(880, 880, .45, .22, 'sine', .12); sfxTone(1320, 1320, .6, .16, 'sine', .24); }
@@ -2173,7 +2261,7 @@ function openTask(m) {
   const body = $('tBody'); body.replaceChildren(); MG[type](body, +m.size || 1, winTask);
 }
 function mgWires(body, m, win) {   // drag from a left node to the matching right node; wrong drop snaps back
-  const n = clampN(Math.round(3 * m), 3, 5), COL = ['#ff3b45', '#3fd0ff', '#5dff9a', '#c46bff', '#ff9a2e'].slice(0, n), order = COL.map((c, i) => i);
+  const n = clampN(Math.round(3 * m), 3, 5), COL = ['#e0302f', '#2f8fd0', '#4fbf4a', '#e8c93a', '#c46bff'].slice(0, n), order = COL.map((c, i) => i);
   for (let i = n - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [order[i], order[j]] = [order[j], order[i]]; }
   if (order.every((v, i) => v === i)) order.push(order.shift());
   body.innerHTML = '<svg class="wsvg"></svg><div class="wcol wl"></div><div class="wcol wr"></div>';
@@ -2181,8 +2269,8 @@ function mgWires(body, m, win) {   // drag from a left node to the matching righ
   COL.forEach((c, i) => { const e = document.createElement('div'); e.className = 'wn'; e.style.background = c; e.dataset.c = i; L.append(e); lefts.push(e); });
   order.forEach(ci => { const e = document.createElement('div'); e.className = 'wn r'; e.style.background = COL[ci]; Rr.append(e); rights[ci] = e; });
   const ctr = e => { const r = e.getBoundingClientRect(), b = body.getBoundingClientRect(); return [r.left + r.width / 2 - b.left, r.top + r.height / 2 - b.top]; };
-  const mk = c => { const l = document.createElementNS(NS, 'line'); l.setAttribute('stroke', c); l.setAttribute('stroke-width', 9); l.setAttribute('stroke-linecap', 'round'); svg.append(l); return l; };
-  const place = (l, a, b) => { l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); };
+  const mk = c => { const l = document.createElementNS(NS, 'path'); l.setAttribute('stroke', c); l.setAttribute('stroke-width', 8); l.setAttribute('stroke-linecap', 'round'); l.setAttribute('fill', 'none'); svg.append(l); return l; };
+  const place = (l, a, b) => { l.setAttribute('d', 'M' + a[0] + ' ' + a[1] + ' L' + b[0] + ' ' + b[1]); };
   const relayout = () => { body.style.setProperty('--nd', clampN(Math.floor(body.clientHeight / (n * 1.3)), 36, 58) + 'px'); wires.forEach(w => place(w.l, ctr(lefts[w.i]), ctr(rights[w.i]))); };
   TK.relayout = relayout; relayout();
   lefts.forEach(el => {
@@ -2192,7 +2280,7 @@ function mgWires(body, m, win) {   // drag from a left node to the matching righ
     el.addEventListener('pointermove', e => { const d = el._d; if (!d || e.pointerId !== d.id) return; const b = body.getBoundingClientRect(); place(d.l, d.a, [e.clientX - b.left, e.clientY - b.top]); });
     const end = e => { const d = el._d; if (!d || e.pointerId !== d.id) return; el._d = null; const r = rights[i].getBoundingClientRect(), pad = 18;
       if (e.type === 'pointerup' && e.clientX >= r.left - pad && e.clientX <= r.right + pad && e.clientY >= r.top - pad && e.clientY <= r.bottom + pad) {
-        place(d.l, d.a, ctr(rights[i])); wires.push({ l: d.l, i }); done.add(i); el.classList.add('ok'); rights[i].classList.add('ok'); sfxTone(900, 1300, .12, .2, 'sine');
+        place(d.l, d.a, ctr(rights[i])); d.l.classList.add('live'); wires.push({ l: d.l, i }); done.add(i); el.classList.add('ok'); rights[i].classList.add('ok'); sfxTone(1400, 350, .1, .16, 'square');
         if (done.size === n) win(); } else d.l.remove(); };   // wrong drop: the wire snaps back, no penalty
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   });
@@ -2213,28 +2301,57 @@ function mgFuses(body, m, win) {   // drag each knob into its green band (re-dra
   }
 }
 function mgSimon(body, m, win) {   // watch the flashing pads, tap the same order; a wrong tap replays the same sequence
-  const len = 4, COL = ['#ff3b45', '#3fd0ff', '#5dff9a', '#ffc83a'], FQ = [262, 330, 392, 523], seq = Array.from({ length: len }, () => Math.random() * 4 | 0);
+  const len = 4, COL = ['#c4161f', '#7ad23f', '#9b4dff', '#e8b33a'], FQ = [196, 233, 277, 330], seq = Array.from({ length: len }, () => Math.random() * 4 | 0);
   body.innerHTML = '<div class="sstat"></div><div class="sgrid"></div>'; const stat = body.children[0], grid = body.children[1], pads = [];
-  COL.forEach(c => { const p = document.createElement('div'); p.className = 'spad'; p.style.setProperty('--c', c); grid.append(p); pads.push(p); });
+  const SIG = ["<svg viewBox=\"0 0 48 48\"><path d=\"M4 24Q24 6 44 24Q24 42 4 24Z\"/><circle cx=\"24\" cy=\"24\" r=\"6\" fill=\"currentColor\"/></svg>","<svg viewBox=\"0 0 48 48\"><path d=\"M24 6L44 40H4Z\"/><circle cx=\"24\" cy=\"30\" r=\"5\"/></svg>","<svg viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"17\"/><path d=\"M24 7V41M7 24H41\"/></svg>","<svg viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"18\"/><path d=\"M24 6L34.6 38.6L6.9 18.4H41.1L13.4 38.6Z\"/></svg>"];
+  COL.forEach((c, gi) => { const p = document.createElement('div'); p.className = 'spad'; p.style.setProperty('--c', c); p.innerHTML = SIG[gi]; grid.append(p); pads.push(p); });
   const relayout = () => { grid.style.width = grid.style.height = clampN(Math.min(body.clientWidth - 8, body.clientHeight - 30), 120, 360) + 'px'; };
   TK.relayout = relayout; relayout();
   let phase = 'show', idx = 0;
   const flash = (i, ms) => { pads[i].classList.add('lit'); sfxTone(FQ[i], FQ[i], ms / 1000 + .1, .25, 'sine'); later(() => pads[i].classList.remove('lit'), ms); };
-  const play = () => { phase = 'show'; idx = 0; stat.textContent = 'Watch…'; seq.forEach((p, k) => later(() => flash(p, 420), 500 + k * 600)); later(() => { phase = 'input'; stat.textContent = 'Your turn'; }, 500 + len * 600); };   // ~600 ms per step
+  const play = () => { phase = 'show'; idx = 0; stat.textContent = 'Watch the sigils…'; seq.forEach((p, k) => later(() => flash(p, 420), 500 + k * 600)); later(() => { phase = 'input'; stat.textContent = 'Repeat the ritual'; }, 500 + len * 600); };   // ~600 ms per step
   pads.forEach((p, i) => p.addEventListener('pointerdown', e => { e.preventDefault(); if (phase !== 'input') return;
-    if (i === seq[idx]) { flash(i, 200); if (++idx === len) { phase = 'done'; stat.textContent = 'Nice!'; later(win, 250); } }
-    else { phase = 'wrong'; stat.textContent = 'Try again'; pads.forEach(q => q.classList.add('bad')); sfxTone(150, 110, .3, .25, 'sawtooth'); later(() => { pads.forEach(q => q.classList.remove('bad')); play(); }, 800); } }));
+    if (i === seq[idx]) { flash(i, 200); if (++idx === len) { phase = 'done'; stat.textContent = 'It is pleased.'; later(win, 250); } }
+    else { phase = 'wrong'; stat.textContent = 'It is displeased…'; pads.forEach(q => q.classList.add('bad')); sfxTone(150, 110, .3, .25, 'sawtooth'); later(() => { pads.forEach(q => q.classList.remove('bad')); play(); }, 800); } }));
   play();
 }
-function mgCharge(body, m, win) {   // tap to fill the gauge while it leaks
+function mgCharge(body, m, win) {   // tap to fill the tank while it leaks; arcs of current jump from the tank to the button
   const gain = CFG.CHARGE_TAP / m, leak = CFG.CHARGE_LEAK;
-  body.innerHTML = '<div class="cgauge"><div class="cfill"></div><b class="cpct">0%</b></div><div class="cbtn">TAP</div>';
-  const fill = body.querySelector('.cfill'), pct = body.querySelector('.cpct'), btn = body.querySelector('.cbtn'); let g = 0, last = performance.now(), fin = false;
-  const relayout = () => { btn.style.width = btn.style.height = clampN(Math.min(body.clientWidth * .55, body.clientHeight * .92), 110, 230) + 'px'; };
+  body.innerHTML = '<div class="egauge"><div class="efill"></div><b class="epct">0%</b></div><div class="elamps">' + '<i></i>'.repeat(10) + '</div>' +
+    '<svg class="earc"><polyline class="a1"/><polyline class="a2"/><polyline class="b1"/><polyline class="b2"/></svg>' +
+    '<div class="ebase"><div class="ecap"><div class="ebtn"><svg viewBox="0 0 24 24"><path d="M14 1L4 14h6l-2 9 11-14h-6z"/></svg><span>TAP</span></div></div></div><div class="estat"></div>';
+  const gauge = body.children[0], fill = gauge.children[0], pct = gauge.children[1], lamps = body.children[1], arc = body.children[2], base = body.children[3], cap = base.firstChild, stat = body.children[4], P = arc.children, lampEls = [...lamps.children];
+  let g = 0, last = performance.now(), fin = false, lit = -1, lvl = '', ax = 0, gt = 0, gh = 0, bx = 0, by = 0, nextArc = 0;
+  const relayout = () => {
+    const S = clampN(Math.min(body.clientWidth * .6, (body.clientHeight - 24) * .98), 120, 250);
+    base.style.width = base.style.height = S + 'px';
+    arc.setAttribute('width', body.clientWidth); arc.setAttribute('height', body.clientHeight);
+    lamps.style.left = gauge.offsetLeft + gauge.offsetWidth + 10 + 'px';
+    const b = body.getBoundingClientRect(), q = gauge.getBoundingClientRect(), r = base.getBoundingClientRect();
+    ax = q.right - b.left; gt = q.top - b.top; gh = q.height; bx = r.left - b.left; by = r.top - b.top + r.height / 2;
+  };
   TK.relayout = relayout; relayout();
-  const paint = () => { fill.style.height = g + '%'; pct.textContent = Math.round(g) + '%'; };
-  btn.addEventListener('pointerdown', e => { e.preventDefault(); if (fin) return; g = Math.min(100, g + gain); btn.classList.add('hit'); later(() => btn.classList.remove('hit'), 70); sfxTone(300 + g * 4, 300 + g * 4, .06, .12, 'triangle'); paint(); if (g >= 100) { fin = true; win(); } });
-  const step = now => { if (!TK || fin) return; const dt = Math.min(.1, (now - last) / 1000); last = now; g = Math.max(0, g - leak * dt); paint(); TK.raf = requestAnimationFrame(step); };
+  const zig = (x1, y1, x2, y2, amp) => { const n = 7, dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len, pts = [];
+    for (let i = 0; i <= n; i++) { const t = i / n, o = i === 0 || i === n ? 0 : (Math.random() * 2 - 1) * amp; pts.push((x1 + dx * t + nx * o).toFixed(1) + ',' + (y1 + dy * t + ny * o).toFixed(1)); } return pts.join(' '); };
+  const arcs = (now, force) => {   // re-roll the lightning ~11x a second; brighter and doubled as the charge rises
+    if (!force && now < nextArc) return; nextArc = now + 90;
+    arc.style.opacity = g < 4 ? 0 : Math.min(1, g / 40); if (g < 4) return;
+    const p1 = zig(ax, gt + gh * (1 - g / 100), bx, by, 8 + g * .14); P[0].setAttribute('points', p1); P[1].setAttribute('points', p1);
+    if (g > 60) { const p2 = zig(ax, gt + gh * .08, bx, by - 30, 10 + g * .1); P[2].setAttribute('points', p2); P[3].setAttribute('points', p2); P[2].style.display = P[3].style.display = ''; }
+    else P[2].style.display = P[3].style.display = 'none';
+  };
+  const paint = () => {
+    fill.style.height = g + '%'; pct.textContent = Math.round(g) + '%';
+    const L = g >= 75 ? 'hi' : g >= 35 ? 'mid' : 'lo'; if (L !== lvl) { gauge.className = 'egauge ' + L; lvl = L; }
+    gauge.classList.toggle('warn', g > 0 && g < 18 && !fin); base.classList.toggle('hot', g >= 75);
+    const n = Math.floor(g / 10); if (n !== lit) { lampEls.forEach((e, i) => e.classList.toggle('on', i < n)); lit = n; }
+    stat.textContent = fin ? 'IT LIVES.' : g <= 0 ? 'IT IS DEAD. FEED IT.' : g < 35 ? 'THE PULSE FADES…' : g < 75 ? 'IT STIRS…' : 'ALMOST…';
+  };
+  const spark = () => { for (let k = 0; k < 7; k++) { const e = document.createElement('i'), a = Math.random() * 6.283, d = 44 + Math.random() * 56; e.className = 'espk'; e.style.cssText = '--dx:' + (Math.cos(a) * d).toFixed(0) + 'px;--dy:' + (Math.sin(a) * d).toFixed(0) + 'px'; base.append(e); later(() => e.remove(), 400); } };
+  base.addEventListener('pointerdown', e => { e.preventDefault(); if (fin) return; g = Math.min(100, g + gain); cap.classList.add('hit'); later(() => cap.classList.remove('hit'), 80); spark(); sfxTone(260 + g * 6, 160 + g * 6, .08, .12, 'square');
+    if (g >= 100) fin = true; paint(); arcs(performance.now(), true); if (fin) win(); });
+  paint();
+  const step = now => { if (!TK || fin) return; const dt = Math.min(.1, (now - last) / 1000); last = now; g = Math.max(0, g - leak * dt); paint(); arcs(now); TK.raf = requestAnimationFrame(step); };
   TK.raf = requestAnimationFrame(step);
 }
 const MG = { wires: mgWires, fuses: mgFuses, simon: mgSimon, charge: mgCharge };
@@ -4015,20 +4132,22 @@ const TSPR = {};
 function taskSprite(type) {
   if (TSPR[type]) return TSPR[type];
   const c = document.createElement('canvas'); c.width = 48; c.height = 46; const g = c.getContext('2d'), r = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
-  r(0, 40, 48, 6, '#0c0f1a'); r(2, 8, 44, 34, '#0b0e18'); r(3, 9, 42, 32, '#1d2336'); r(3, 9, 42, 3, '#33406a');   // cabinet
-  r(7, 14, 34, 21, '#04070d'); r(7, 14, 34, 1, '#3a4a7a'); r(7, 34, 34, 1, '#3a4a7a'); r(7, 14, 1, 21, '#3a4a7a'); r(40, 14, 1, 21, '#3a4a7a');   // screen
-  if (type === 'wires') [['#ff3b45', 19], ['#3fd0ff', 24], ['#5dff9a', 29]].forEach(([col, y]) => { r(10, y, 9, 2, col); r(29, y, 9, 2, col); r(19, y + 1, 10, 1, 'rgba(255,255,255,.18)'); });
-  else if (type === 'fuses') { r(10, 20, 28, 2, '#34408e'); r(24, 18, 4, 6, '#ff3b45'); r(10, 28, 28, 2, '#34408e'); r(16, 26, 4, 6, '#5dff9a'); }
-  else if (type === 'simon') { r(11, 18, 11, 7, '#ff3b45'); r(25, 18, 11, 7, '#3fd0ff'); r(11, 26, 11, 7, '#5dff9a'); r(25, 26, 11, 7, '#ffc83a'); }
-  else { g.fillStyle = '#3ff0d2'; g.beginPath(); g.moveTo(27, 16); g.lineTo(18, 26); g.lineTo(24, 26); g.lineTo(21, 34); g.lineTo(31, 23); g.lineTo(25, 23); g.closePath(); g.fill(); }
-  r(8, 37, 4, 3, '#b3121a'); r(14, 37, 4, 3, '#3fd0ff'); r(20, 37, 4, 3, '#5dff9a'); r(37, 37, 3, 3, '#33406a');   // little buttons
+  r(0, 40, 48, 6, '#0a0606'); r(2, 8, 44, 34, '#120a09'); r(3, 9, 42, 32, '#2a1914'); r(3, 9, 42, 3, '#4a2e24');   // rusted cabinet
+  r(5, 20, 2, 12, '#3a2118'); r(41, 14, 2, 20, '#1c0f0b'); r(30, 10, 3, 2, '#5a2a1c');   // rust streaks
+  r(7, 14, 34, 21, '#030403'); r(7, 14, 34, 1, '#5a3a2e'); r(7, 34, 34, 1, '#5a3a2e'); r(7, 14, 1, 21, '#5a3a2e'); r(40, 14, 1, 21, '#5a3a2e');   // dead screen
+  if (type === 'wires') [['#e0302f', 19], ['#2f8fd0', 24], ['#e8c93a', 29]].forEach(([col, y]) => { r(10, y, 9, 2, col); r(29, y, 9, 2, col); r(19, y + 1, 10, 1, col); r(21, y + 2, 6, 1, 'rgba(0,0,0,.5)'); });
+  else if (type === 'fuses') { r(12, 17, 4, 15, '#10240c'); r(12, 24, 4, 8, '#7ad23f'); r(22, 17, 4, 15, '#10240c'); r(22, 20, 4, 12, '#7ad23f'); r(32, 17, 4, 15, '#10240c'); r(32, 27, 4, 5, '#7ad23f'); }
+  else if (type === 'simon') { r(14, 19, 6, 6, '#c4161f'); r(28, 19, 6, 6, '#7ad23f'); r(14, 27, 6, 6, '#9b4dff'); r(28, 27, 6, 6, '#e8b33a'); r(22, 23, 4, 4, '#e8dcc0'); }
+  else { [[27,17,5],[26,18,5],[25,19,5],[24,20,5],[23,21,11],[27,22,6],[26,23,5],[25,24,5],[24,25,5],[23,26,4],[22,27,3],[21,28,2],[20,29,2]].forEach(([x, y, w]) => { r(x, y, w, 1, '#ffe94a'); r(x, y, 1, 1, '#fffbd0'); }); r(23, 21, 11, 1, '#fffbd0'); [[13,20],[15,29],[34,28],[36,19],[12,25],[31,18]].forEach(([x, y]) => r(x, y, 1, 1, '#e8c93a')); r(15, 20, 2, 1, '#8a7410'); r(33, 27, 2, 1, '#8a7410'); }
+  r(8, 37, 4, 3, '#b3121a'); r(14, 37, 4, 3, '#4a3a2e'); r(20, 37, 4, 3, '#7ad23f'); r(37, 37, 3, 3, '#4a3a2e');   // little buttons
+  r(10, 41, 3, 5, '#7a0a12'); r(11, 44, 1, 2, '#c4161f'); r(33, 41, 2, 4, '#7a0a12');   // blood drips
   return (TSPR[type] = c);
 }
 function drawTasks(vx, vy, vw, vh, now) {   // only the current set: open = teal pulse, busy = amber, done = dim grey + tick
   const tk = S.map.tasks, ts = S.ts; if (!tk || !ts || !ts.set) return;
   for (let i = 0; i < tk.length; i++) { const sc = ts.st[i]; if (!sc) continue; const x = tk[i][0], y = tk[i][1];
     if (x < vx - 70 || x > vx + vw + 70 || y < vy - 70 || y > vy + vh + 70) continue;
-    const rgb = sc === 1 ? '60,240,215' : sc === 2 ? '255,190,70' : '120,128,150', a = sc === 3 ? .16 : sc === 1 ? .34 + .14 * Math.sin(now / 380 + i) : .4;
+    const rgb = sc === 1 ? '130,255,80' : sc === 2 ? '255,190,70' : '120,128,150', a = sc === 3 ? .16 : sc === 1 ? .34 + .14 * Math.sin(now / 380 + i) : .4;
     const g = ctx.createRadialGradient(x, y, 4, x, y, 56); g.addColorStop(0, `rgba(${rgb},${a.toFixed(3)})`); g.addColorStop(1, `rgba(${rgb},0)`); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 56, 0, 7); ctx.fill();
     ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.beginPath(); ctx.ellipse(x, y + 18, 24, 7, 0, 0, TAU); ctx.fill();
     ctx.drawImage(taskSprite(tk[i][2]), x - 24, y - 28);
@@ -4758,7 +4877,7 @@ function ctxFor(mp, role, st) {   // which context action is available right now
   return null;
 }
 function updateControls(now) {
-  if (TK) { ctxKind = null; UIC.item = -2; $('atk').classList.add('hidden'); $('ctx').classList.add('hidden'); $('itm').classList.add('hidden'); return; }   // minigame open: action buttons are off
+  if (TK) { ctxKind = null; UIC.item = -2; UIC.rr = 0; $('itmT').classList.add('hidden'); $('atk').classList.add('hidden'); $('ctx').classList.add('hidden'); $('itm').classList.add('hidden'); return; }   // minigame open: action buttons are off
   const hunt = S.phase === 'hunt', role = myRole(), st = myState(), dead = st === 'dead';
   const mp = !dead && hunt ? posOf(S.me) : null; let carrying = false; for (const id in S.st) if (S.st[id].s === 'carried') carrying = true;
   const kind = mp ? ctxFor(mp, role, st) : null;
@@ -4768,6 +4887,8 @@ function updateControls(now) {
   $('atk').classList.toggle('hidden', !showAtk); $('ctx').classList.toggle('hidden', !ctxKind);
   const itI = hunt && !dead && S.item ? ITEMS.findIndex(x => x.id === S.item) : -1;   // held item -> button on the right side
   if (itI !== UIC.item) { UIC.item = itI; const b = $('itm'); b.classList.toggle('hidden', itI < 0); if (itI >= 0) { $('itmI').src = itemSprite(itI).toDataURL(); $('itmN').textContent = ITEMS[itI].name; b.style.setProperty('--ic', ITEMS[itI].col); } }
+  { let n = 0; if (itI >= 0 && S.eg.solo && S.itemRrAt) { const left = S.itemRrAt - now; if (left > 0 && left <= CFG.SOLO_WARN_MS) n = Math.ceil(left / 1000); }   // LAST STAND: 3-2-1 above the item button
+    if (n !== UIC.rr) { UIC.rr = n; const t = $('itmT'); t.classList.toggle('hidden', !n); if (n) { t.textContent = n; t.style.setProperty('--ic', ITEMS[itI].col); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop'); } } }
   if (ctxKind && ctxKind !== UIC.ctx) { $('ctx').textContent = CTX_LABEL[ctxKind]; UIC.ctx = ctxKind; }
   if (showAtk) { const left = Math.max(0, S.cdEnd - now), q = Math.round((S.cdTot ? Math.min(1, left / S.cdTot) : 0) * 50) / 50;
     if (q !== UIC.cd) { $('atk').style.setProperty('--cd', q); UIC.cd = q; } $('atk').classList.toggle('dis', carrying); }
