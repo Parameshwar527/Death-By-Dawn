@@ -30,6 +30,7 @@ h1{margin:0;font-size:clamp(22px,7dvh,32px)}
 .pl .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dot{width:12px;height:12px;border-radius:50%;flex:none;display:inline-block}.tag{font-size:11px;opacity:.7;margin-left:auto;white-space:nowrap}
 
+#backT{position:fixed;z-index:30;top:calc(10px + var(--sat));left:calc(10px + var(--sal));width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;font:800 24px "Courier New",ui-monospace,monospace;text-transform:none;letter-spacing:0;display:flex;align-items:center;justify-content:center}
 #infoBtn{position:fixed;z-index:30;top:calc(10px + var(--sat));right:calc(10px + var(--sar));width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;font:italic 800 22px "Courier New",ui-monospace,monospace;text-transform:none;letter-spacing:0;display:flex;align-items:center;justify-content:center}
 #info{position:fixed;inset:0;z-index:40;background:rgba(2,3,12,.88);display:flex;align-items:center;justify-content:center;padding:calc(12px + var(--sat)) calc(12px + var(--sar)) calc(12px + var(--sab)) calc(12px + var(--sal));touch-action:pan-y}
 #info .ibox{width:min(460px,100%);max-height:100%;display:flex;flex-direction:column;background:rgba(5,7,22,.96);border:2px solid #2b3584;box-shadow:0 0 0 2px #04051a,0 0 0 4px #6e1119,0 14px 44px rgba(0,0,0,.7);border-radius:4px;font-family:"Courier New",ui-monospace,monospace}
@@ -219,6 +220,8 @@ small{color:#8e99dd}
 #gchip{padding:2px 10px;background:rgba(0,0,0,.6);border-radius:10px;font-size:12px;line-height:16px;white-space:nowrap;font-weight:700;color:#ffe27a;max-width:100%}
 #gpill{padding:2px 14px;background:rgba(0,0,0,.68);border:1px solid rgba(255,217,58,.55);border-radius:999px;font-size:12px;line-height:16px;font-weight:700;color:#ffe27a;white-space:nowrap;max-width:100%}
 #gann{position:absolute;z-index:9;left:0;right:0;top:26%;text-align:center;pointer-events:none;font-size:min(8vw,12dvh,38px);font-weight:900;letter-spacing:.08em;color:#ffe27a;text-shadow:0 2px 14px #000,0 0 18px rgba(255,200,60,.6)}
+#lsann{position:absolute;z-index:9;left:0;right:0;top:16%;padding:0 16px;text-align:center;pointer-events:none;font-weight:900;letter-spacing:.08em;text-shadow:0 2px 14px #000}
+#lsann b{display:block;font-size:min(9vw,13dvh,44px)}#lsann span{display:block;margin-top:6px;font-size:min(4vw,6dvh,19px)}
 #pann{position:absolute;z-index:9;left:0;right:0;top:26%;text-align:center;pointer-events:none;font-size:min(4vw,6dvh,19px);font-weight:900;letter-spacing:.08em;color:#ffe27a;text-shadow:0 2px 14px #000,0 0 18px rgba(255,200,60,.6)}
 #mm{position:absolute;z-index:5;right:calc(var(--sar) + 18px);top:30%;pointer-events:none;opacity:.78;border:1px solid rgba(120,140,230,.5);background:rgba(4,6,20,.55);image-rendering:pixelated}
 #task{position:absolute;inset:0;z-index:14;display:flex;align-items:center;justify-content:center;padding:calc(8px + var(--sat)) calc(8px + var(--sar)) calc(8px + var(--sab)) calc(8px + var(--sal));background:rgba(0,0,0,.18);touch-action:none}
@@ -271,12 +274,12 @@ small{color:#8e99dd}
  <button id="testBtn" class="sec">🧪 Test Room (offline · 4 bots)</button>
  <small id="joinHint">Everyone must be on the same wifi (or the same phone hotspot).</small>
  <div id="mStatus"></div><button id="cancelJoin" class="sec hidden">Cancel</button></div></div>
-<div id="lobby" class="screen hidden"><button id="infoBtn" class="sec" aria-label="Items info">i</button>
+<div id="lobby" class="screen hidden"><button id="backT" class="sec hidden" aria-label="Exit test room">←</button><button id="infoBtn" class="sec" aria-label="Items info">i</button>
 <div id="info" class="hidden"><div class="ibox"><div class="ihead"><span>Info</span><button id="infoClose" class="sec" aria-label="Close">✕</button></div><div class="itabs" id="infoTabs"></div><div class="ilist" id="infoList"></div></div></div>
 <div class="card lcard">
  <div class="lA"><div class="ltitle">Death by Dawn</div><small id="codeHint">Room code (tap to copy)</small><div id="code" role="button" tabindex="0"></div>
   <button id="invite" class="sec">Copy invite link</button><div id="count"></div>
-  <button id="testDiff" class="sec hidden"></button><div id="testRole" class="row hidden"><button data-r="killer">Killer</button><button data-r="survivor">Survivor</button></div>
+  <button id="testDiff" class="sec hidden"></button><button id="testN" class="sec hidden"></button><div id="testRole" class="row hidden"><button data-r="killer">Killer</button><button data-r="survivor">Survivor</button></div>
   <button id="start">Start</button><div id="wait">Waiting for the host to start…</div><div id="lStatus"></div>
   <button id="leaveL" class="sec">Leave</button><small id="dbg"></small></div>
  <div class="lB"><div id="plist"></div></div></div></div>
@@ -284,7 +287,7 @@ small{color:#8e99dd}
  <div id="under"><div id="chips" class="hidden"><div id="thud" class="hidden"></div><div id="gchip" class="hidden"></div></div><div id="stat"></div><div id="gpill" class="hidden"></div><div id="specL" class="hidden"></div><div id="banner" class="hidden"></div></div>
  <div id="topbar"><div id="tbL"><div id="hud"></div><div id="chip" class="hidden"></div></div><div id="cd"></div><button id="menuBtn" class="sec" aria-label="Menu">☰</button></div>
  <div id="dead" class="hidden">You were sacrificed<small>Spectating the survivors…</small></div>
- <div id="hitFlash"></div><div id="hitBanner"></div><div id="gann" class="hidden">GENERATORS POWERED - GATES OPEN</div><div id="pann" class="hidden"></div>
+ <div id="hitFlash"></div><div id="hitBanner"></div><div id="gann" class="hidden">GENERATORS POWERED - GATES OPEN</div><div id="pann" class="hidden"></div><div id="lsann" class="hidden"></div>
  <div id="hint"></div><div id="base"><div id="knob"></div></div><div id="zone"></div>
  <div id="acts"><button id="atk" class="act hidden">ATTACK</button><button id="ctx" class="act hidden"></button><button id="itm" class="hidden"><img id="itmI" alt=""><span id="itmN"></span></button></div>
  <div id="flashOv"></div><div id="noteBy" class="note"></div><div id="noteVic" class="note"></div>
@@ -301,7 +304,7 @@ small{color:#8e99dd}
 <script>
 'use strict';
 /* ================= CONFIG (all tunables here) ================= */
-const GAME_VERSION = 27;                 // bump when a change breaks compatibility
+const GAME_VERSION = 28;                 // bump when a change breaks compatibility
 const ROOM_PREFIX  = 'deathbydawn-';
 const CODE_CHARS   = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const PEER_CONFIG  = { config: { iceServers: [
@@ -353,8 +356,8 @@ const CFG = {
   ATTACK_SLOW_MULT: 0.1, LAUGH_MS: 3000,               // killer speed multiplier after EVERY swing (hit or miss); lasts exactly as long as that swing's cooldown
   CRAWL_SPEED: 63,                     // downed survivors
   PICKUP_R: 70, CARRY_SPEED: 194, CARRY_OFFSET: 14,  // pickup range, killer speed while carrying, carried dot's offset behind the killer
-  HOOK_R: 80, HOOKS_TO_DIE: 3, HOOK_GRACE_MS: 30000,    // killer-to-hook range to hang someone; time until a hooked survivor dies
-  RESCUE_R: 80, RESCUE_HOLD_MS: 7200, RESCUE_MULT_BY_N: [1, 1, 1, 1, 1, 1.195, 1.39, 1.585, 1.78, 1.975],   // unhook time x this, indexed by survivors in the round (<= 4 survivors: base time; more survivors: slower)
+  HOOK_R: 80, HOOKS_TO_DIE: 3, HOOK_GRACE_MS: 36000,    // killer-to-hook range to hang someone; time until a hooked survivor dies (36 s = old 30 s +20%); the timer is PAUSED while a rescuer is unhooking
+  RESCUE_R: 80, RESCUE_HOLD_MS: 7200, RESCUE_MULT_BY_N: [1, 1, 1, 1, 1, 1.3, 1.6, 1.9, 2.2, 2.5],   // unhook time x this, indexed by survivors in the round (<= 4 survivors: base time; each survivor beyond 4 adds +30% of the base time)
  
   HOOK_WARN_FRAC: 0.5,                 // when the hook timer ring has this fraction of the grace time left it changes colour (visual warning only)
   PICKUP_IMMUNITY_MS: 3000,            // after a rescue the (downed) survivor can't be picked up by the killer for this long; shown as a shield ring
@@ -386,7 +389,7 @@ const CFG = {
   BLOOD_PRODUCE_MS: 8400,   // injured: a drop every N units walked, max drops kept, drop lifetime
   INJURED_VIGNETTE_MULT: 1.2,          // injured survivors' terror vignette is this much stronger
   AURA_R: 46, AURA_ALPHA: 0.32,        // hooked-teammate marker radius (world units) and peak opacity
-  EG_SEE_ON_MS: 1500, EG_SEE_OFF_MS: 1500,   // once the generators are done the killer sees the survivors in pulses: shown for ON ms, hidden for OFF ms, repeating
+  EG_SEE_ON_MS: 3000, EG_SEE_OFF_MS: 2000, SOLO_SEE_ON_MS: 1000, SOLO_SEE_OFF_MS: 7000,   // the killer sees the survivors in pulses, counted from the moment the form starts: hidden for OFF ms, shown for ON ms, repeating. Full MONSTER FORM: 2 s hidden / 3 s shown; LAST STAND (nerfed form): 7 s hidden / 1 s shown
   PIN_MARGIN: 34,                      // off-screen arrow distance from the screen edge (CSS px)
   // ---- tasks (survivors) ----
   TASKS_SHOWN_EXTRA: 2, TASKS_SHOWN_MAX: 10,   // each task set shows min(survivors + EXTRA, MAX) stations and needs one fewer than that
@@ -398,7 +401,9 @@ const CFG = {
   DOOR_SURV_BREAK_MS: 3000,            // a barricade can be broken by SURVIVORS too (BREAK button) once it has stood this long since it was built (the killer can break it from DOOR_ARM_MS on, as before)
   DOOR_R: 100, DOOR_ARM_MS: 1000,      // barricade: reach to the doorway centre (host allows +ACT_SLACK) / time after building that survivors can still pass through it (solid for the killer, who can't target it yet)
   GATE_HOLD_MS: 2000, GATE_R: 110,      // endgame: stand in the glow (GATE_R deep, as long as the gate) in front of an open gate this long to escape
-  DAWN_MS: 30000, DAWN_SPEED_MULT: 1.25, DAWN_SLOW_MULT: 0.95,   // 'dawn breaking' countdown after the 2nd generator / when it ends the killer's speed x DAWN_SPEED_MULT and the post-swing slow is only (1 - DAWN_SLOW_MULT) of normal
+  MONSTER_DELAY_MS: 5000, MONSTER_SPEED_MULT: 1.3, MONSTER_SLOW_MULT: 0.5,   // MONSTER FORM (killer status): starts MONSTER_DELAY_MS after the gates open. While active: killer speed x MONSTER_SPEED_MULT (+30%), the post-swing slow multiplier is MONSTER_SLOW_MULT (0.5 = 50% slow, instead of ATTACK_SLOW_MULT = 90% slow), any hit downs a survivor in one go, and the killer sees everyone in pulses (EG_SEE_*)
+  CARRY_BOOST_MULT: 1.3,   // LAST STAND + full MONSTER FORM: extra speed multiplier (+30%) while the killer carries a survivor
+  SOLO_MS: 70000, SOLO_SPEED_MULT: 1.15, SOLO_SLOW_MULT: 0.25, SOLO_REROLL_MS: 10000, SOLO_GIVE_MS: 12000,   // LAST SURVIVOR sequence: one survivor left (gates still shut) => they must survive SOLO_MS; the killer gets a NERFED monster form (+15% speed, swing slow multiplier 0.25, no sight pulses, no one-hit down) until the gates open (then the full monster form takes over); the sequence is called LAST STAND: a player holding an item has it re-rolled to a different random one every SOLO_REROLL_MS, an empty-handed player gets a random one after SOLO_GIVE_MS
   GEN_NEEDED: 2,                       // generators that must be fixed (the rest lock and reset)
   GEN_R: 90,                           // reach for REPAIR / KICK (the host allows +ACT_SLACK on top)
   GEN_BEACON_R: 700, GEN_BEACON_FADE: 150,   // yellow beacon on OPEN generators (survivors): only within this distance of the viewed player, fading in over the last GEN_BEACON_FADE units
@@ -430,8 +435,9 @@ const CFG = {
  
   FB_ARM_MS: 700, FB_R: 520, FB_MIN_MS: 1200, FB_MAX_MS: 3500, FB_KILLER_HALF: 100,   // flashbang: arm time / reach / blind time range / half-angle the killer must be facing it within (deg)
   DECOY_MS: 5250, DECOY_MIN_D: 50, DECOY_MAX_D: 140,   // clone lifetime (was 7000, before that 5000) / how far from the activator they appear (was 110..300)
-  SNAKE_R: 150, SNAKE_UNHOOK_FRAC: 0.5,   // Snake Oil (survivor): cures the nearest hooked / downed ally within SNAKE_R (never the user); a hooked ally gets +50% of the unhook bar instantly
-  SNAKE_K_MULT: 1.5, SNAKE_K_MS: 4000, SNAKE_K_VIS: 1.8,   // Snake Oil (killer): x1.5 speed decaying to x1.0 over 4 s + 'heightened senses' (flashlight + ambient vision x1.8, easing out over the last second)
+  SNAKE_MULT: 1.7, SNAKE_MS: 6000,   // Snake Oil (both sides): x1.7 speed decaying linearly to x1.0 over SNAKE_MS
+  SNAKE_REPAIR_MULT: 2, SNAKE_UNHOOK_MULT: 2,   // Snake Oil (survivor): while it lasts the user's generator repair contribution and unhook (rescue) speed are x2
+  SNAKE_K_VIS: 1.8,   // Snake Oil (killer): + 'heightened senses' for SNAKE_MS (flashlight + ambient vision x1.8, easing out over the last second)
   SMOKE_MS: 8000, SMOKE_R: 119, SMOKE_BRICK: 18, SMOKE_BRICKS: 60,   // round cloud: radius, and the ring of small blocks that stops light
   TP_DIST: 195, THROW_DIST: 120,
   // ---- mobile layout ----
@@ -619,7 +625,7 @@ const S = { ts: tsEmpty(), test: false, testRole: 'survivor', role: null, code: 
   pick: {}, chars: {}, lastRx: 0, leaving: false, inRoom: false, reconnecting: false, reconnectUntil: 0, lobbyOn: false, hsT: 0,
   phase: 'lobby', phaseEnd: 0, eyesStart: 0, eyesMs: 0, nextEyes: 0, face: 0, faceTarget: 0,   // phase: lobby | reveal | select | headstart | hunt | result (phaseEnd/eyesStart = local performance.now() times)
   st: {}, spec: -1, sacAt: 0, cdEnd: 0, cdTot: 0,
-  gs: gcEmpty(), gping: {}, powAt: 0, ds: dcEmpty(), eg: { on: false, final: false, endAt: 0 }, res: null, gateT0: 0, item: null, wo: woEmpty(), smokeW: [], smSig: '', fx2: {}, blindEnd: 0, blindTot: 0 };   // gs: client copy of the generator state; gping: generator index -> time of the last killer ping; powAt: time of the GENERATORS POWERED announcement   // st: id -> client-side status record (see applyStatus); spec: spectated player id; cdEnd/cdTot: my attack cooldown
+  gs: gcEmpty(), gping: {}, powAt: 0, monAt: 0, ds: dcEmpty(), eg: { on: false, final: false, endAt: 0 }, res: null, gateT0: 0, item: null, wo: woEmpty(), smokeW: [], smSig: '', fx2: {}, blindEnd: 0, blindTot: 0 };   // gs: client copy of the generator state; gping: generator index -> time of the last killer ping; powAt: time of the GENERATORS POWERED announcement   // st: id -> client-side status record (see applyStatus); spec: spectated player id; cdEnd/cdTot: my attack cooldown
 const SEL = { on: false, role: '', cards: [], sig: '', f: -1, sec: -1, q: -1 };   // character-select UI state (client side)
 const HP = new Map();       // host only: pid -> sim player
 let HIST = [];             // host only: recent {t, f, p:{id:[x,y]}} snapshots for lag compensation
@@ -688,7 +694,7 @@ function copy(text) { try { navigator.clipboard.writeText(text).catch(() => fall
 
 /* ================= HOST SIMULATION ================= */
 // Combat/status fields on every sim player. st: healthy | injured | downed | carried | hooked | dead (killer stays 'healthy' forever).
-function resetCombat(p) { p.st = 'healthy'; p.mods = []; p.cd = p.wind = p.downEnd = p.pickupImmuneUntil = 0; p.carry = p.carriedBy = null; p.hold = false; p.hookIdx = -1; p.hookEnd = 0; p.prog = 0; p.rpOn = false; p.task = -1; p.rep = p.kick = false; p.kickT = 0; p.kickGen = -1; p.esc = false; p.gateT = 0; p.hookCount = 0; p.hookExtra = 0; p.item = null; p.adrEnd = 0; p.slideUntil = 0; p.slickImm = 0; p.ldx = p.ldy = 0; p.ch = p.role === 'killer' ? 0 : dfltCh(p.id); }
+function resetCombat(p) { p.st = 'healthy'; p.mods = []; p.cd = p.wind = p.downEnd = p.pickupImmuneUntil = 0; p.carry = p.carriedBy = null; p.hold = false; p.hookIdx = -1; p.hookEnd = 0; p.prog = 0; p.rpOn = false; p.task = -1; p.rep = p.kick = false; p.kickT = 0; p.kickGen = -1; p.esc = false; p.gateT = 0; p.hookCount = 0; p.hookExtra = 0; p.item = null; p.adrEnd = 0; p.snakeEnd = 0; p.rpMul = 1; p.slideUntil = 0; p.slickImm = 0; p.ldx = p.ldy = 0; p.ch = p.role === 'killer' ? 0 : dfltCh(p.id); }
 function addPlayer(name, connId, token, host) {
   let id = 0; while (HP.has(id)) id++;
   const used = new Set([...HP.values()].map(p => p.color));
@@ -932,7 +938,7 @@ function botKillerThink(p, B, now) {
   let tgt = null, bs = 1e9, down = null, dd2 = 1e9;
   for (const q of HP.values()) {
     if (q.role !== 'survivor' || !q.on) continue; const dd = Math.hypot(q.x - p.x, q.y - p.y);
-    if (!((EG.on && L.kdawn) || dd < 110 || (dd < L.ksight && losClear(p.x, p.y, q.x, q.y)))) continue;
+    if (!((EG.final && L.kdawn) || dd < 110 || (dd < L.ksight && losClear(p.x, p.y, q.x, q.y)))) continue;
     if (q.st === 'healthy' || q.st === 'injured') { const sc = dd - (q.st === 'injured' ? 80 : 0) - (B.tid === q.id ? 120 : 0); if (sc < bs) { bs = sc; tgt = q; } }
     else if (q.st === 'downed' && now >= q.pickupImmuneUntil && dd < dd2) { dd2 = dd; down = q; }
     if (q.st === 'healthy' || q.st === 'injured' || q.st === 'downed') B.last = { x: q.x, y: q.y, t: now };
@@ -1024,7 +1030,7 @@ function addMod(p, id, mult, ms, now, ramp) { p.mods = p.mods.filter(m => m.id !
 function dropMod(p, id) { p.mods = p.mods.filter(m => m.id !== id); }
 function speedOf(p, now) {   // world units / second for this player's role + state
   let base;
-  if (p.role === 'killer') { base = p.carry != null ? CFG.CARRY_SPEED : CFG.KILLER_SPEED; if (EG.final) base *= CFG.DAWN_SPEED_MULT; if (p.carry == null) base *= 1 + CFG.CHASE_MAX_BONUS * (S.chase || 0); }   // dawn has broken: the killer speeds up; chase momentum (S.chase 0..1) adds up to CHASE_MAX_BONUS while he keeps a survivor in his beam
+  if (p.role === 'killer') { base = p.carry != null ? CFG.CARRY_SPEED : CFG.KILLER_SPEED; if (EG.final) base *= CFG.MONSTER_SPEED_MULT; else if (EG.solo) base *= CFG.SOLO_SPEED_MULT; if (p.carry != null && (EG.final || EG.solo)) base *= CFG.CARRY_BOOST_MULT; if (p.carry == null) base *= 1 + CFG.CHASE_MAX_BONUS * (S.chase || 0); }   // dawn has broken: the killer speeds up; chase momentum (S.chase 0..1) adds up to CHASE_MAX_BONUS while he keeps a survivor in his beam
   else switch (p.st) { case 'downed': base = CFG.CRAWL_SPEED; break; case 'carried': case 'hooked': case 'dead': return 0; default: base = CFG.SURVIVOR_SPEED; }
   p.mods = p.mods.filter(m => m.until > now); let mult = 1; for (const m of p.mods) mult *= m.ramp ? m.from + (1 - m.from) * Math.max(0, Math.min(1, (now - m.t0) / m.ms)) : m.mult;
   return base * mult;
@@ -1053,7 +1059,7 @@ function hostTick() {
   }
   // Killer facing: last non-zero input direction, turned smoothly at KILLER_TURN_DPS.
   let f; if (killer) { const step = CFG.KILLER_TURN_DPS * Math.PI / 180 * dt; S.face += Math.max(-step, Math.min(step, angDiff(S.faceTarget, S.face))); f = encodeFace(S.face); }
-  if (S.phase === 'hunt') { stepCombat(now, dt * 1000, killer); genStep(now, dt * 1000, killer); doorStep(now); egStep(now, dt * 1000); itemStep(now, dt * 1000); }
+  if (S.phase === 'hunt') { stepCombat(now, dt * 1000, killer); genStep(now, dt * 1000, killer); doorStep(now); soloStep(now); egStep(now, dt * 1000); itemStep(now, dt * 1000); }
   { const o = {}; for (const p of HP.values()) o[p.id] = [p.x, p.y]; HIST.push({ t: now, f: S.face, p: o }); while (HIST.length && now - HIST[0].t > CFG.HIST_MS) HIST.shift(); }
   const d = []; let online = 0;
   for (const p of HP.values()) { if (p.on) online++; d.push(p.id, Math.round(p.x * 10) / 10, Math.round(p.y * 10) / 10); }
@@ -1080,7 +1086,7 @@ function freeHold(v) {   // release the hook / the killer's arms when a survivor
   if (v.st === 'hooked' && v.hookIdx >= 0) { HU[v.hookIdx] = -1; v.hookIdx = -1; v.prog = 0; v.rpOn = false; }
   else if (v.st === 'carried') { const k = HP.get(v.carriedBy); if (k) k.carry = null; v.carriedBy = null; }
 }
-function sendRp(h) { const m = { t: 'rp', id: h.id, p: Math.round(h.prog), on: h.rpOn }; T.broadcast(m); applyRp(m); }   // rescue progress of hooked survivor h
+function sendRp(h) { const m = { t: 'rp', id: h.id, p: Math.round(h.prog), on: h.rpOn, r: h.rpMul || 1 }; T.broadcast(m); applyRp(m); }   // rescue progress of hooked survivor h
 function notifyCd(k, ms) { if (k.host) setCd(ms); else if (k.connId) T.sendTo(k.connId, { t: 'cd', ms }); }
 /* ---------- TASK SETS (host-authoritative): stations, claims, set progress, repair permits ---------- */
 // Station codes in TSH.st / S.ts.st: 0 hidden (not in the current set) · 1 open · 2 busy (claimed by TSH.by[i]) · 3 done
@@ -1175,13 +1181,32 @@ function doorBreakCheck(k) {   // called when the killer's swing resolves: every
   return broke;
 }
 /* ---------- ENDGAME (host-authoritative) ----------
-   2nd generator fixed -> gates open, the killer sees everyone, the DAWN_MS countdown runs. When it ends (final) the killer is faster and his swing slow nearly vanishes.
+   2nd generator fixed -> gates open and the MONSTER_DELAY_MS countdown runs. When it ends (EG.final) the killer enters MONSTER FORM: transition flicker, pulsing sight of everyone, one-hit downs, +25% speed, 50% swing slow.
    A survivor standing within GATE_R of an open gate for GATE_HOLD_MS escapes (state 'dead' + esc flag: out of play, shown as escaped, not sacrificed). */
-function egEmpty() { return { on: false, final: false, dawnEnd: 0 }; }
+function egEmpty() { return { on: false, final: false, dawnEnd: 0, solo: false, soloEnd: 0, soloNext: 0, soloUsed: false }; }
 let EG = egEmpty();
-function egPack() { return { on: EG.on, final: EG.final, left: EG.on && !EG.final ? Math.max(0, Math.round(EG.dawnEnd - performance.now())) : 0 }; }
+function egPack() { return { on: EG.on, final: EG.final, left: EG.on && !EG.final ? Math.max(0, Math.round(EG.dawnEnd - performance.now())) : 0, solo: EG.solo, sleft: EG.solo ? Math.max(0, Math.round(EG.soloEnd - performance.now())) : 0 }; }
 function egSend() { const m = Object.assign({ t: 'eg' }, egPack()); T.broadcast(m); applyEg(m, false); }
-function egStart() { if (EG.on) return; EG.on = true; EG.final = false; EG.dawnEnd = performance.now() + CFG.DAWN_MS; egSend(); }
+function egStart() { if (EG.on) return; EG.on = true; EG.final = false; EG.dawnEnd = performance.now() + CFG.MONSTER_DELAY_MS; egSend(); }
+function soloStep(now) {   // LAST SURVIVOR: exactly one survivor alive (hooked ones count as alive) and the gates still shut => 70 s survive sequence
+  if (!EG.solo) {
+    if (EG.soloUsed || EG.on) return;
+    const alive = [...HP.values()].filter(q => q.role === 'survivor' && q.st !== 'dead');
+    if (alive.length !== 1) return;
+    EG.solo = true; EG.soloUsed = true; EG.soloEnd = now + CFG.SOLO_MS; for (const p of HP.values()) p.sNext = 0; egSend(); return;
+  }
+  for (const p of HP.values()) {   // LAST STAND items: holding one => it re-rolls to a different one every SOLO_REROLL_MS; empty hands => a new one after SOLO_GIVE_MS (the timer restarts whenever the item changes, e.g. after using it)
+    if (!p.on || !p.role || p.st === 'dead') continue;
+    if (p.sSeen !== p.item || !p.sNext) { p.sSeen = p.item; p.sNext = now + (p.item ? CFG.SOLO_REROLL_MS : CFG.SOLO_GIVE_MS); }
+    if (now < p.sNext) continue;
+    const opts = ITEMS.filter(it => it.id !== p.item); p.item = opts[Math.floor(Math.random() * opts.length)].id; p.itemAt = now; p.sSeen = p.item; p.sNext = now + CFG.SOLO_REROLL_MS; sendItem(p);
+  }
+  if (now >= EG.soloEnd) {   // time's up: the solo survivor wins unless hooked/dead (downed or carried still counts)
+    EG.solo = false; egSend();
+    const v = [...HP.values()].find(q => q.role === 'survivor' && q.st !== 'dead' && q.st !== 'hooked');
+    if (v) { v.esc = true; freeHold(v); v.hold = false; setSt(v, 'dead', { esc: 1 }); checkWin(); }
+  }
+}
 function gateZone(g, M) {   // the escape area of ONE gate = exactly as long as the gate, GATE_R deep, on the room side (your centre must be inside); the glow, the pin, the bots and the escape check all use this same box
   const [x, y, w, h] = g, ix = x <= 0 ? 1 : x + w >= M.w ? -1 : 0, iy = y <= 0 ? 1 : y + h >= M.h ? -1 : 0, D = CFG.GATE_R;
   return h > w ? [ix > 0 ? x + w : x - D, y, D, h] : [x, iy > 0 ? y + h : y - D, w, D];
@@ -1191,10 +1216,10 @@ function egStep(now, dtMs) {
   if (!EG.on) return;
   if (!EG.final && now >= EG.dawnEnd) { EG.final = true; egSend(); }
   for (const p of HP.values()) {
-    if (p.role !== 'survivor' || !p.on || (p.st !== 'healthy' && p.st !== 'injured')) { p.gateT = 0; continue; }
+    if (p.role !== 'survivor' || !p.on || (p.st !== 'healthy' && p.st !== 'injured' && p.st !== 'downed')) { p.gateT = 0; continue; }   // downed survivors can crawl out too
     let near = false; for (const g of MAP.gates) if (inZone(gateZone(g, MAP), p.x, p.y)) { near = true; break; }
     p.gateT = near ? p.gateT + dtMs : 0;
-    if (p.gateT >= CFG.GATE_HOLD_MS) { p.gateT = 0; p.esc = true; freeHold(p); setSt(p, 'dead', { esc: 1 }); checkWin(); }
+    if (p.gateT >= CFG.GATE_HOLD_MS) { p.gateT = 0; p.esc = true; freeHold(p); p.hold = false; setSt(p, 'dead', { esc: 1 }); checkWin(); }
   }
 }
 /* ---------- GENERATORS (host-authoritative) ----------
@@ -1257,7 +1282,9 @@ function genStep(now, dtMs, killer) {   // every hunt tick: expire disabled time
     const g = G[i], k = cnt[i].length, was = g.rep.length; g.rep = cnt[i];
     if (!k) { g.ping = 0; continue; }
     if (was === 0 || now >= g.ping) { genPing(i); g.ping = now + CFG.GEN_PING_MS; }   // first repairer, then every GEN_PING_MS while it is being repaired
-    g.prog += 100 * CFG.GEN_RATE_BY_K[clampN(k, 1, 9)] * split / charges * dt;
+    let nb = 0; for (const id of cnt[i]) { const q = HP.get(id); if (q && q.snakeEnd > now) nb++; }   // Snake Oil: a boosted repairer counts SNAKE_REPAIR_MULT times
+    const kr = CFG.GEN_RATE_BY_K[clampN(k, 1, 9)], boost = (k + nb * (CFG.SNAKE_REPAIR_MULT - 1)) / k;
+    g.prog += 100 * kr * boost * split / charges * dt;
     if (g.prog >= 100) { g.prog = 100; fixes.push(i); }
   }
   for (const i of fixes) if (G[i].st === 1) genFix(i);   // a second one finishing in the same tick is locked by the first fix if no permit is left
@@ -1283,15 +1310,17 @@ function dbgKickNearest() {   // debug button: applies the kick effect to the op
 }
 function stList(now) {   // compact status of everyone, for welcome/start (reconnects)
   return [...HP.values()].map(p => { const e = { id: p.id, s: p.st || 'healthy' };
-    if (e.s === 'hooked') { e.hk = p.hookIdx; e.ms = Math.max(0, Math.round(p.hookEnd - now)); e.rp = Math.round(p.prog); e.ro = p.rpOn ? 1 : 0; }
+    if (e.s === 'hooked') { e.hk = p.hookIdx; e.ms = Math.max(0, Math.round(p.hookEnd - now)); e.rp = Math.round(p.prog); e.ro = p.rpOn ? 1 : 0; e.rr = p.rpMul || 1; }
     if (e.s === 'downed') { e.rec = Math.max(0, Math.round(p.downEnd - now)); e.rt = p.downTot || CFG.DOWN_RECOVER_MS; if (now < p.pickupImmuneUntil) e.prot = Math.round(p.pickupImmuneUntil - now); }   // recovery time left + pickup immunity left
     if (p.esc) e.esc = 1;
     return e; });
 }
 function hitSurvivor(v, now) {
+  v.gateT = 0;   // a hit resets the 2 s escape bar
   for (const h of HP.values()) if (h.st === 'hooked' && v.hold && h.hookIdx >= 0 && h.prog > 0) {   // the rescuer got hit: progress resets
     const hp = MAP.hooks[h.hookIdx]; if (Math.hypot(v.x - hp[0], v.y - hp[1]) <= CFG.RESCUE_R + CFG.ACT_SLACK) { h.prog = 0; sendRp(h); } }
-  if (v.st === 'healthy' && !EG.on) { addMod(v, 'burst', CFG.INJURY_BURST_MULT, CFG.INJURY_BURST_MS, now); setSt(v, 'injured', { hit: 1 }); }
+  if (v.st === 'healthy' && !EG.final) {   // monster form: no injured stage, one hit downs
+     addMod(v, 'burst', CFG.INJURY_BURST_MULT, CFG.INJURY_BURST_MS, now); setSt(v, 'injured', { hit: 1 }); }
   else { v.hold = false; dropMod(v, 'burst'); goDowned(v, now, { hit: 1 }); }
 }
 function goDowned(v, now, ex) {   // THE way a survivor becomes downed (hit or rescue): starts a fresh recovery timer
@@ -1321,7 +1350,7 @@ function resolveAttack(k, now) {
     hit = true; hitSurvivor(v, now); hits.push([v.id, v.st]);   // v.st = 'injured' | 'downed' after the hit
   }
   if (doorBreakCheck(k)) hit = true;   // breaking a barricade counts like a connected swing (same cooldown as any swing)
-  const ms = hit ? CFG.ATTACK_HIT_CD_MS : CFG.ATTACK_MISS_CD_MS; k.cd = now + ms; notifyCd(k, ms); addMod(k, 'attackSlow', EG.final ? CFG.DAWN_SLOW_MULT : CFG.ATTACK_SLOW_MULT, hit ? ms : Math.round(ms * 0.65), now);   // a miss slows 35% shorter than its cooldown
+  const ms = hit ? CFG.ATTACK_HIT_CD_MS : CFG.ATTACK_MISS_CD_MS; k.cd = now + ms; notifyCd(k, ms); addMod(k, 'attackSlow', EG.final ? CFG.MONSTER_SLOW_MULT : EG.solo ? CFG.SOLO_SLOW_MULT : CFG.ATTACK_SLOW_MULT, hit ? ms : Math.round(ms * 0.65), now);   // a miss slows 35% shorter than its cooldown
   const am = { t: 'atk', k: k.id, a: Math.round(useFace * 100) / 100, h: hits };   // swing result for everyone's effects (empty h = miss)
   T.broadcast(am); try { onAtk(am); } catch (e) {}   // the host is a player too; cosmetic code can never break the simulation
 }
@@ -1377,12 +1406,14 @@ function stepCombat(now, dtMs, killer) {
   for (const v of HP.values()) {
     if (v.st !== 'hooked') continue;
     if (now >= v.hookEnd) { killSurvivor(v); continue; }
-    const h = MAP.hooks[v.hookIdx]; let on = false;
-    for (const r of HP.values()) {   // one valid rescuer is enough; several do NOT stack
+    const h = MAP.hooks[v.hookIdx]; let on = false, mul = 1;
+    for (const r of HP.values()) {   // rescuers do NOT stack: the best one counts (a Snake Oil user rescues x SNAKE_UNHOOK_MULT)
       if (r === v || r.role !== 'survivor' || !r.on || !r.hold || (r.st !== 'healthy' && r.st !== 'injured')) continue;
-      if (Math.hypot(r.x - h[0], r.y - h[1]) <= CFG.RESCUE_R + CFG.ACT_SLACK) { on = true; break; } }
-    if (on) { v.prog += dtMs; if (v.prog >= rescueMs()) { rescueDone(v, now); continue; } }   // released/out of range: progress just pauses
-    if (on !== v.rpOn) { v.rpOn = on; sendRp(v); }
+      if (Math.hypot(r.x - h[0], r.y - h[1]) <= CFG.RESCUE_R + CFG.ACT_SLACK) { on = true; if (r.snakeEnd > now) mul = Math.max(mul, CFG.SNAKE_UNHOOK_MULT); } }
+    if (on) { v.hookEnd += dtMs;   // unhook in progress: the hook timer is paused
+      v.prog += dtMs * mul; if (v.prog >= rescueMs()) { rescueDone(v, now); continue; } }   // released/out of range: progress just pauses
+    if (!on) mul = 1;
+    if (on !== v.rpOn || mul !== (v.rpMul || 1)) { v.rpOn = on; v.rpMul = mul; sendRp(v); }
   }
 }
 // Killer always starts at MAP.killerSpawn; survivors take the spawns that are farthest from everyone already placed (=> different rooms).
@@ -1542,25 +1573,9 @@ function useItem(p, now) {
     if (!mk.length) { ok = false; msgTo(p, 'No room for phantoms'); }
     else { DCY.push(...mk); woSend('dc'); evSend({ k: 'puff', x: p.x, y: p.y, ti: 2 }); }
   }
-  else if (id === 'snakeoil') {
-    if (p.role === 'killer') {   // heightened senses: x1.5 speed decaying to normal + big vision boost (client-side, see snakeVis)
-      addMod(p, 'adr', CFG.SNAKE_K_MULT, CFG.SNAKE_K_MS, now, true); sxSend(p.id, 'snake', CFG.SNAKE_K_MS); evSend({ k: 'plus', x: p.x, y: p.y, ti: ITEMS.findIndex(x => x.id === id), n: 6 });
-    } else {   // survivor: nearest hooked (+50% unhook bar) / downed (gets up INJURED) ally in range; never yourself
-      let tg = null, tr = 9;
-      for (const q of HP.values()) {
-        if (q === p || q.role !== 'survivor' || !q.on) continue;
-        const r = q.st === 'hooked' ? 0 : q.st === 'downed' ? 1 : -1; if (r < 0) continue;
-        const d = Math.hypot(q.x - p.x, q.y - p.y); if (d > CFG.SNAKE_R) continue;
-        const sc = r * 1000 + d; if (!tg || sc < tr) { tg = q; tr = sc; }
-      }
-      if (!tg) { ok = false; msgTo(p, 'No downed or hooked ally close enough'); }
-      else {
-        const ti = ITEMS.findIndex(x => x.id === id); tg.hookExtra = (tg.hookExtra || 0) + 1;   // the cured ally can survive one more hook
-        if (tg.st === 'hooked') { tg.prog += rescueMs() * CFG.SNAKE_UNHOOK_FRAC; if (tg.prog >= rescueMs()) rescueDone(tg, now); else sendRp(tg); }
-        else setSt(tg, 'injured');   // gets up as INJURED only (blood trail stays)
-        evSend({ k: 'plus', x: p.x, y: p.y, ti, n: 5 }); evSend({ k: 'plus', x: tg.x, y: tg.y, ti, n: 9 });
-      }
-    }
+  else if (id === 'snakeoil') {   // both sides: x1.7 speed decaying to normal over 6 s. Survivor: repair + unhook x2 for the duration. Killer: heightened senses (big vision boost, client-side, see snakeVis)
+    addMod(p, 'adr', CFG.SNAKE_MULT, CFG.SNAKE_MS, now, true); p.snakeEnd = now + CFG.SNAKE_MS; sxSend(p.id, 'snake', CFG.SNAKE_MS);
+    evSend({ k: 'plus', x: p.x, y: p.y, ti: ITEMS.findIndex(x => x.id === id), n: 6 });
   }
   else if (id === 'nightmare') {   // thrown: a violet glow reveals a big area for 2 s; the OTHER side's players caught in it get the nightmare (see itemStep)
     const q = throwPt(p, CFG.THROW_DIST), ti = ITEMS.findIndex(x => x.id === id);
@@ -1715,11 +1730,12 @@ function applyState(m) {   // phase + timers + player states from welcome/start 
 }
 // Client-side status record per player id: { s, hk, hookEnd, protEnd, flashAt, rp, rpAt, rpOn } (all times = local performance.now()).
 function applyStatus(m) {
+  if (m.hit && m.id === S.me) S.gateT0 = 0;   // got hit: my escape ring restarts
   if (m.id === S.me && TK) closeTask('');   // any state change of mine (hit, downed, carried...) ends my task
   if (m.id === S.me && ctxHeld && ctxHeldKind !== 'rescue') ctxRelease();   // ...and my REPAIR / KICK hold
   const now = performance.now(), prev = S.st[m.id];
   S.st[m.id] = { s: m.s, hk: m.hk == null ? -1 : m.hk, hookEnd: m.s === 'hooked' ? now + (+m.ms || 0) : 0, protEnd: m.prot > 0 ? now + m.prot : 0,
-    flashAt: m.hit ? now : 0, recEnd: m.s === 'downed' && m.rec > 0 ? now + m.rec : 0, recTot: +m.rt || CFG.DOWN_RECOVER_MS, rp: +m.rp || 0, rpAt: now, rpOn: !!m.ro, esc: !!m.esc };
+    flashAt: m.hit ? now : 0, recEnd: m.s === 'downed' && m.rec > 0 ? now + m.rec : 0, recTot: +m.rt || CFG.DOWN_RECOVER_MS, rp: +m.rp || 0, rpAt: now, rpOn: !!m.ro, holdAt: m.ro ? now : 0, rr: +m.rr || 1, esc: !!m.esc };
   if (!bulkApply && inGame && S.map && m.s !== (prev ? prev.s : 'healthy')) { try { stateSound(m, prev); } catch (e) {} }
   if (m.id === S.me && m.s === 'dead' && (!prev || prev.s !== 'dead')) S.sacAt = now;   // (an escape shows 'You escaped!' in the same overlay)
   if (inGame) refreshStatus();
@@ -1760,15 +1776,19 @@ function applyDs(m, quiet) {   // door state from the host ('ds' message, or wel
       if (st[i] === 3 && old.st[i] !== 3) { brAt[i] = now; try { sfxDoorBreak(Math.max(.35, v)); } catch (e) {} } } }
   S.ds = { st, armEnd, brAt, brkEnd };
 }
+const fmtT = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
 function applyEg(m, quiet) {   // endgame state from the host: gates open + dawn countdown (left = ms), then final = the killer is unleashed
   const now = performance.now(), was = S.eg;
-  S.eg = { on: !!m.on, final: !!m.final, endAt: m.on && !m.final ? now + (+m.left || 0) : 0 };
+  S.eg = { on: !!m.on, final: !!m.final, endAt: m.on && !m.final ? now + (+m.left || 0) : 0, solo: !!m.solo, soloAt: m.solo ? now + (+m.sleft || 0) : 0 };
   if (!quiet && S.eg.on && !was.on) { S.powAt = now; try { sfxGenFixed(.9); } catch (e) {} }
-  if (!quiet && S.eg.final && !was.final) { try { metalHit(.9, 70, 3.2); sfxTone(60, 38, 1.4, .8, 'sine'); } catch (e) {} }
+  if (!quiet && S.eg.solo && !was.solo) { S.lsAt = now; S.sightAt = now; }
+  if (!quiet && S.eg.final && !was.final) S.sightAt = now;   // LAST STAND announcement
+  if (!quiet && (S.eg.final || S.eg.solo) && !(was.final || was.solo)) { S.monAt = now; try { metalHit(.9, 70, 3.2); sfxTone(60, 38, 1.4, .8, 'sine'); } catch (e) {} }
 }
-function applyRp(m) { const o = S.st[m.id]; if (!o) return; o.rp = +m.p || 0; o.rpAt = performance.now(); o.rpOn = !!m.on; }
+function hookRemain(st, now) { return st.hookEnd - (st.rpOn && st.holdAt ? st.holdAt : now); }   // ms left on the hook timer; frozen while a rescue is in progress
+function applyRp(m) { const o = S.st[m.id]; if (!o) return; const nw = performance.now(); if (m.on && !o.rpOn) o.holdAt = nw; else if (!m.on && o.rpOn && o.holdAt) { o.hookEnd += nw - o.holdAt; o.holdAt = 0; } o.rp = +m.p || 0; o.rpAt = performance.now(); o.rpOn = !!m.on; o.rr = +m.r || 1; }
 function setCd(ms) { S.cdEnd = performance.now() + ms; S.cdTot = ms; }
-function clearRoundState() { S.pick = {}; S.ts = tsEmpty(); S.gs = gcEmpty(); S.ds = dcEmpty(); S.gping = {}; S.powAt = 0; S.pannAt = 0; S.eg = { on: false, final: false, endAt: 0 }; S.res = null; S.gateT0 = 0; EG = egEmpty(); genHumStopAll(); closeTask(''); S.st = {}; S.spec = -1; S.sacAt = 0; S.cdEnd = S.cdTot = 0; TRAIL.clear(); TERROR.clear(); FX.length = 0; for (const k in AN) delete AN[k]; for (const k in LAUGH) delete LAUGH[k]; S.item = null; S.wo = woEmpty(); S.smokeW = []; S.smSig = ''; S.fx2 = {}; S.blindEnd = 0; IFX.length = 0; ALERTS.length = 0; ctxRelease(); }
+function clearRoundState() { S.pick = {}; S.ts = tsEmpty(); S.gs = gcEmpty(); S.ds = dcEmpty(); S.gping = {}; S.powAt = 0; S.monAt = 0; S.pannAt = 0; S.lsAt = 0; S.sightAt = 0; S.eg = { on: false, final: false, endAt: 0, solo: false, soloAt: 0 }; S.res = null; S.gateT0 = 0; EG = egEmpty(); genHumStopAll(); closeTask(''); S.st = {}; S.spec = -1; S.sacAt = 0; S.cdEnd = S.cdTot = 0; TRAIL.clear(); TERROR.clear(); FX.length = 0; for (const k in AN) delete AN[k]; for (const k in LAUGH) delete LAUGH[k]; S.item = null; S.wo = woEmpty(); S.smokeW = []; S.smSig = ''; S.fx2 = {}; S.blindEnd = 0; IFX.length = 0; ALERTS.length = 0; ctxRelease(); }
 function startReconnect() {
   if (S.reconnecting || S.leaving) return;
   S.reconnecting = true; S.reconnectUntil = Date.now() + CFG.RECONNECT_WINDOW; banner('Reconnecting to host…'); rejoinLoop();
@@ -1830,11 +1850,11 @@ function leaveGameUI() { try { ambStop(); } catch (e) {} SEL.on = false; $('sel'
 /* ================= ITEM INFO (lobby "i" button) ================= */
 const ITEM_INFO = {
   trap: 'Set a hidden trap. Holds the first enemy who steps on it.',
-  flashbang: 'Thrown. Blinds everyone who sees it, except you.',
+  flashbang: 'Throw a flashbang. Blinds everyone who sees it, except you.',
   decoy: 'Creates two fake copies of you.',
-  snakeoil: 'Survivors: pick a nearby downed ally back up (as injured), or fill a hooked ally\'s rescue bar by 50% and the ally survives one more hook before dying (not usable on yourself). Killer: heightened senses for 4 s, a big vision boost and a speed boost that fades from x1.5.',
+  snakeoil: 'Gives you a boost in your speed and performance.',
   teleport: 'Teleport a short distance forward.',
-  nightmare: 'Thrown. Lights a big area for 2 s. Enemies caught in it get nightmares: reduced vision, a violet trail, no sound but whispers.'
+  nightmare: 'Give your enemies nightmares, deafening them and limiting their vision.'
 };
 const INFO_GUIDE = [
   ['SURVIVORS', '#3fe8d2', [
@@ -1879,7 +1899,7 @@ const INFO_OBJ = [
   ['Hooks', '#ff5a5a', 'Downed survivors are hung here. Teammates can free them.'],
   ['Barricades', '#c9a227', 'Block a doorway to slow the killer. They can be broken.'],
   ['Gates', '#ffd27a', 'Open once enough generators are fixed. Hold at one to escape.'],
-  ['Dawn', '#ff9a3a', 'Countdown after the gates open. When it ends, the killer gets stronger.']
+  ['Monster form', '#ff9a3a', '5 s after the gates open the killer transforms: faster, one hit downs, shorter swing slow, and he sees everyone in pulses.']
 ];
 const INFO_ARROWS = [
   [['#ff4a40'], 'Red', 'A hooked teammate. Survivors only.'],
@@ -1938,7 +1958,7 @@ function refreshUI() {
   $('start').classList.toggle('hidden', S.role !== 'host'); $('wait').classList.toggle('hidden', S.role === 'host');
   $('start').disabled = S.players.length < CFG.MIN_PLAYERS; $('mEnd').classList.toggle('hidden', S.role !== 'host'); syncRoleUI();
   const tr = $('testRole'); tr.classList.toggle('hidden', !(S.test && S.role === 'host')); tr.querySelectorAll('button').forEach(b => b.classList.toggle('sec', b.dataset.r !== S.testRole));
-  $('invite').classList.toggle('hidden', S.test); { const td = $('testDiff'); td.classList.toggle('hidden', !(S.test && S.role === 'host')); td.textContent = 'Bots: ' + BL().name; } $('codeHint').textContent = S.test ? 'Test room (offline)' : 'Room code (tap to copy)';
+  $('invite').classList.toggle('hidden', S.test); $('backT').classList.toggle('hidden', !(S.test && S.role === 'host')); $('leaveL').classList.toggle('hidden', S.test); { const tn = $('testN'); tn.classList.toggle('hidden', !(S.test && S.role === 'host' && !S.started)); tn.textContent = 'Players: ' + S.players.length + '/' + CFG.MAX_PLAYERS + ' (tap to change)'; } { const td = $('testDiff'); td.classList.toggle('hidden', !(S.test && S.role === 'host')); td.textContent = 'Bots: ' + BL().name; } $('codeHint').textContent = S.test ? 'Test room (offline)' : 'Room code (tap to copy)';
   const ab = $('addBot'); if (ab) ab.classList.toggle('hidden', S.role !== 'host' || S.started || S.players.length >= CFG.MAX_PLAYERS);
   const l = $('plist'); l.replaceChildren();
   S.players.forEach(p => { const row = document.createElement('div'); row.className = 'pl'; row.style.borderLeft = '4px solid ' + p.color;
@@ -1980,7 +2000,8 @@ let brightIdx = (() => { const v = parseInt(store.get('dotsBright'), 10); return
 let monoV = 0, monoSig = '';   // current monochrome amount 0..1 (eased towards the target every frame)
 function applyBright() { monoSig = ''; composeFilter(); $('bg').style.filter = brightIdx ? 'brightness(' + CFG.BRIGHT_LEVELS[brightIdx] + ') contrast(1.05)' : ''; }
 function composeFilter() { const b = brightIdx ? 'brightness(' + CFG.BRIGHT_LEVELS[brightIdx] + ') contrast(1.05)' : '', g = monoV > .004 ? 'grayscale(' + monoV.toFixed(3) + ')' : '', f = (b + ' ' + g).trim(); if (f !== monoSig) { monoSig = f; $('cv').style.filter = f; } }
-function snakeVis() { const f = S.fx2[S.me], now = performance.now(); if (!f || !(f.snake > now)) return 1; return 1 + (CFG.SNAKE_K_VIS - 1) * Math.min(1, (f.snake - now) / 1000, (now - (f.snake - CFG.SNAKE_K_MS)) / 150 + .05); }
+function ambVis() { return snakeVis(); }   // the circle around the killer: grows with Snake Oil (the drawn circle used to stay small while only the hidden line-of-sight area grew)
+function snakeVis() { const f = S.fx2[S.me], now = performance.now(); if (!f || !(f.snake > now)) return 1; return 1 + (CFG.SNAKE_K_VIS - 1) * Math.min(1, (f.snake - now) / 1000, (now - (f.snake - CFG.SNAKE_MS)) / 150 + .05); }
 let nmVis = 1;   // vision scale for ME (eased with the black-and-white fade): 1 normally, CFG.NM_VIS while Nightmare Fuel exposes me
 function nmKillerScale() { const ne = S.wo.ne; return ne && S.phase === 'hunt' && performance.now() < ne.k ? CFG.NM_VIS : 1; }   // the killer's torch as seen by survivors
 let nextWhisper = 0;
@@ -2335,7 +2356,7 @@ function buildVis(role, ph, me, k, W, H) {   // compute this frame's lit polygon
   } else if (role === 'killer' && ph === 'hunt') {
     if (f !== null) lastFace = f;
     const pts = visibilityPolygon(me[0], me[1], CFG.FLASH_RANGE * nmVis * snakeVis(), lastFace, CFG.FLASH_ANGLE * Math.PI / 180); VIS.cone = { pts, path: pathOf(pts), x: me[0], y: me[1], dir: lastFace, R: CFG.FLASH_RANGE * nmVis * snakeVis() };
-    const pts2 = visibilityPolygon(me[0], me[1], CFG.KILLER_AMBIENT_R * nmVis * snakeVis()); VIS.amb = { pts: pts2, path: pathOf(pts2) };
+    const pts2 = visibilityPolygon(me[0], me[1], CFG.KILLER_AMBIENT_R * nmVis * ambVis()); VIS.amb = { pts: pts2, path: pathOf(pts2) };
     VIS.hooks = S.map && S.map.hooks ? S.map.hooks : null;
   }
 }
@@ -2372,7 +2393,7 @@ function renderDarkness(me, k, W, H) {
   if (VIS.surv) cutLight(VIS.surv, me[0], me[1], CFG.SURV_VIEW_R * nmVis, 1);
   if (VIS.beam) cutCone(VIS.beam, CFG.BEAM_GLOW);                                    // survivors see the killer's beam faintly
   if (VIS.cone) cutCone(VIS.cone, 1);
-  if (VIS.amb) cutLight(VIS.amb, me[0], me[1], CFG.KILLER_AMBIENT_R * nmVis, 1);
+  if (VIS.amb) cutLight(VIS.amb, me[0], me[1], CFG.KILLER_AMBIENT_R * nmVis * ambVis(), 1);   // (the drawn circle now grows with the vision polygon)
   if (VIS.hooks) for (const h of VIS.hooks) {   // killer: every hook stays lit, a small circle with a soft rim
     const r = CFG.HOOK_SEE_R * 1.25, g = mctx.createRadialGradient(h[0], h[1], 0, h[0], h[1], r);
     g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(.7, 'rgba(0,0,0,.95)'); g.addColorStop(1, 'rgba(0,0,0,0)');
@@ -2538,8 +2559,8 @@ function stateSound(m, prev) {   // called from applyStatus on a real state chan
 function stepStatusAudio(now) {   // per frame: rescue ticks while a teammate is being freed + the hook-timer warning
   const hooks = S.map.hooks || [];
   for (const id in S.st) { const st = S.st[id]; if (st.s !== 'hooked') continue; const h = hooks[st.hk]; if (!h) continue;
-    if (st.rpOn && now - (st.tickAt || 0) > 220) { st.tickAt = now; sfxRescueTick(evVol(h[0], h[1]), Math.min(1, (st.rp + now - st.rpAt) / rescueMs())); }
-    if (!st.warned && st.hookEnd && st.hookEnd - now <= CFG.HOOK_GRACE_MS * CFG.HOOK_WARN_FRAC) { st.warned = true; sfxWarn(evVol(h[0], h[1], 1000)); } }
+    if (st.rpOn && now - (st.tickAt || 0) > 220) { st.tickAt = now; sfxRescueTick(evVol(h[0], h[1]), Math.min(1, (st.rp + (now - st.rpAt) * (st.rr || 1)) / rescueMs())); }
+    if (!st.warned && st.hookEnd && hookRemain(st, now) <= CFG.HOOK_GRACE_MS * CFG.HOOK_WARN_FRAC) { st.warned = true; sfxWarn(evVol(h[0], h[1], 1000)); } }
 }
 /* ---------- generator sounds (synthesized with the helpers above; all respect mute via sfxOn) ---------- */
 function sfxBarricade(v) { sfxTone(120, 55, .22, v * .9, 'square'); sfxNoise(.14, v * .55, 'lowpass', 1000, 260); sfxTone(220, 90, .12, v * .35, 'square', .09); }   // planks slammed into place
@@ -2684,7 +2705,7 @@ function ambBird(v) {   // the first bird of the morning, far off: a short whist
 function ambShot() { const r = Math.random(), v = rnd(.55, 1); if (r < .28) ambOwl(v); else if (r < .38) ambHowl(v); else if (r < .62) ambCreak(v); else ambGust(v); }
 function ambTension(now) {   // 0 normally; the dawn countdown (after the 2nd generator) climbs .3 -> .75; 1 once the killer is unleashed
   const e = S.eg; if (S.phase !== 'hunt' || !e || !e.on) return 0; if (e.final) return 1;
-  return .3 + .45 * (1 - Math.max(0, Math.min(1, (e.endAt - now) / CFG.DAWN_MS)));
+  return .3 + .45 * (1 - Math.max(0, Math.min(1, (e.endAt - now) / CFG.MONSTER_DELAY_MS)));
 }
 function ambStep(now, dt, V) {
   if (!AC || AMB.broken) return;
@@ -2943,7 +2964,8 @@ function drawFx(now, me, vw, vh, role, vId) {   // visibility: the slash only if
    Swap/extend these later for VFX (sprites, particles, animations) without touching the rules above.
    e = { p: roster entry, x, y, me: is the viewed player, now, st: client status record, alpha, hook: [x,y]|null, hookLeft: 0..1,
          resProg: 0..1, prot: 0|1, flash: 0..1 }. The world transform is already set and ctx.globalAlpha holds e.alpha. */
-function nameTag(e, dy) { ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.lineWidth = 3; ctx.strokeText(e.p.name, e.x, e.y - dy); ctx.fillStyle = '#fff'; ctx.fillText(e.p.name, e.x, e.y - dy); }
+let GHOSTING = false;   // true while a Snake Oil afterimage is being drawn (no name tags, shadows, rings or flair on the copies)
+function nameTag(e, dy) { if (GHOSTING) return; ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.lineWidth = 3; ctx.strokeText(e.p.name, e.x, e.y - dy); ctx.fillStyle = '#fff'; ctx.fillText(e.p.name, e.x, e.y - dy); }
 function ringAt(x, y, r, col, lw, frac) { ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); ctx.arc(x, y, r, -Math.PI / 2, -Math.PI / 2 + TAU * frac); ctx.stroke(); }
 
 /* ================= CHARACTER SPRITES =================
@@ -3599,8 +3621,9 @@ function blit(b, x, bottom, face, sc, flash, cx) {   // feet (bitmap bottom) at 
   if (flash > 0) { ctx.globalAlpha *= .9 * flash; ctx.drawImage(whiteOf(b), dx, dy, w, h); }
   ctx.restore();
 }
-function charShadow(e, rx, dy) { ctx.fillStyle = 'rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(e.x, e.y + dy, rx, rx * .32, 0, 0, TAU); ctx.fill(); }
-function colorRing(e, rx, dy, col) {   // player colour marker under the feet (white outer ring = the viewed player)
+function charShadow(e, rx, dy) { if (GHOSTING) return; ctx.fillStyle = 'rgba(0,0,0,.38)'; ctx.beginPath(); ctx.ellipse(e.x, e.y + dy, rx, rx * .32, 0, 0, TAU); ctx.fill(); }
+function colorRing(e, rx, dy, col) {
+  if (GHOSTING) return;   // player colour marker under the feet (white outer ring = the viewed player)
   ctx.lineWidth = 3; ctx.strokeStyle = col || e.p.color; ctx.beginPath(); ctx.ellipse(e.x, e.y + dy, rx, rx * .34, 0, 0, TAU); ctx.stroke();
   if (e.me) { ctx.lineWidth = 1.5; ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.ellipse(e.x, e.y + dy, rx + 4, (rx + 4) * .34, 0, 0, TAU); ctx.stroke(); }
 }
@@ -3667,7 +3690,7 @@ function drawHuman(e, hurt) {
   const lkU = sfNm(ci) === 'Leon Kennedy' && !mv ? ((e.now / 1000) + e.p.id * 2.3) % 7 / 1.2 : 9, lkf = lkU > .12 && lkU < .88 ? -1 : 1;   // Leon's shoulder check: he turns to look behind him
   const sc = sfScare(e, ci), shx = sc > .15 ? (((e.now / 45) | 0) & 1 ? 1 : -1) * sc * 3.6 : 0;   // Courage trembles when the killer is near
   blit(humanBmp(ci, mv ? 'run' : 'stand', f, hurt ? 1 : 0), e.x + shx, e.y + 22, a.face * lkf, PS * k, e.flash);
-  survFlair(e, a, mv, ci, sc);
+  if (!GHOSTING) survFlair(e, a, mv, ci, sc);
   nameTag(e, 44 - 55 * (1 - k));
 }
 const drawHealthy = e => drawHuman(e, false), drawInjured = e => drawHuman(e, true);
@@ -3700,13 +3723,15 @@ function drawHooked(e) {   // hanging from the hook: struggles at first, goes li
   if (e.resProg > 0) ringAt(e.x, ry, CFG.RADIUS + 22, '#69f0ae', 4, e.resProg);
   nameTag(e, 100);
 }
-function killerGlow(e) {   // survivors: pulsing red aura + ring at the killer's feet so he is impossible to miss
+function killerGlow(e) {
+  if (GHOSTING) return;   // survivors: pulsing red aura + ring at the killer's feet so he is impossible to miss
   const pu = .5 + .5 * Math.sin(e.now / 170), g = ctx.createRadialGradient(e.x, e.y, 8, e.x, e.y, 80);
   g.addColorStop(0, `rgba(255,30,40,${(.4 + .15 * pu).toFixed(3)})`); g.addColorStop(1, 'rgba(255,0,0,0)');
   ctx.save(); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(e.x, e.y, 80, 0, TAU); ctx.fill();
   ctx.strokeStyle = `rgba(255,60,70,${(.6 + .35 * pu).toFixed(3)})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(e.x, e.y + 21, 32 + 5 * pu, (32 + 5 * pu) * .34, 0, 0, TAU); ctx.stroke(); ctx.restore();
 }
-function killerTag(e) {   // red 'KILLER' pill with a bobbing arrow above his head
+function killerTag(e) {
+  if (GHOSTING) return;   // red 'KILLER' pill with a bobbing arrow above his head
   ctx.save(); ctx.textAlign = 'center'; ctx.font = '900 13px system-ui,sans-serif';
   const w = ctx.measureText('KILLER').width + 14, y = e.y - 68, bob = Math.sin(e.now / 150) * 3;
   ctx.fillStyle = '#b3121a'; ctx.strokeStyle = '#ffd0d4'; ctx.lineWidth = 2; rr(e.x - w / 2, y - 12, w, 18, 6); ctx.fill(); ctx.stroke();
@@ -3732,8 +3757,8 @@ function drawKiller(e) {
   let swing = -1, sel = 0; for (const x of FX) if (x.type === 'slash' && x.k === e.p.id) { const el = e.now - x.t0; if (el >= 0 && el < 260) { swing = el < 90 ? 0 : 1; sel = el; } }
   const LA = LAUGH[e.p.id], lel = LA ? e.now - LA.t0 : -1, lau = lel >= 0 && lel < CFG.LAUGH_MS && swing < 0;   // laughing: for LAUGH_MS after a hit (a new swing cuts it short)
   const mv = a.sp > 25, lf = lau ? ((lel / 120) | 0) & 1 : ((e.now / 520) | 0) & 1;
-  const ki = kIdx(e.p.id), tel = S.powAt > 0 ? e.now - S.powAt : 9e9, tfm = S.eg.on && tel < 1300;   // the gates open and the killer changes (every skin)
-  const mon = S.eg.on && (!tfm || (((tel / 80) | 0) & 1) === 1);   // monster form; flickers between the two while changing
+  const ki = kIdx(e.p.id), tel = S.monAt > 0 ? e.now - S.monAt : 9e9, tfm = (S.eg.final || S.eg.solo) && tel < 1300;   // monster form starts: 1.3 s flicker transition (every skin)
+  const mon = (S.eg.final || S.eg.solo) && (!tfm || (((tel / 80) | 0) & 1) === 1);   // monster form; flickers between the two while changing
   const b = swing >= 0 ? killerBmp('swing', swing, false, ki, mon) : mv ? killerBmp('run', (((e.now + 40) / 95) | 0) & 3, lau, ki, mon) : killerBmp('idle', lf, lau, ki, mon);
   const bob = lau ? Math.abs(Math.sin(lel / 85)) * 3 : 0, jx = lau ? (((lel / 60) | 0) & 1 ? 1 : -1) : tfm ? (((tel / 40) | 0) & 1 ? 2 : -2) : 0;   // shoulders shake, body bounces; he convulses while changing
   charShadow(e, 24, 21); colorRing(e, 22, 21, '#b3121a'); if (!e.me) killerGlow(e);
@@ -3746,7 +3771,8 @@ function drawKiller(e) {
   if (tfm && !reduceFx) { const u = tel / 1300; ctx.save(); ctx.globalAlpha = (1 - u) * .7 * (e.alpha === undefined ? 1 : e.alpha); ctx.strokeStyle = KILLERS[ki].col; ctx.lineWidth = 4 * (1 - u) + 1; ctx.beginPath(); ctx.ellipse(e.x, e.y + 20, 20 + u * 70, 8 + u * 28, 0, 0, TAU); ctx.stroke(); ctx.restore(); }   // shockwave ring in the killer's colour
   if (lau) drawHaHa(e, lel, a.face, ki); else if (e.me) nameTag(e, 60); else killerTag(e);   // the name tag makes room for the laugh
 }
-function drawHaHa(e, el, face, ki) {   // comic \"HA HA HA!\" bubbles popping above the killer, repeating once a second until the laugh ends; the Demogorgon growls instead
+function drawHaHa(e, el, face, ki) {
+  if (GHOSTING) return;   // comic \"HA HA HA!\" bubbles popping above the killer, repeating once a second until the laugh ends; the Demogorgon growls instead
   const cyc = el % 1000, out = Math.min(1, (CFG.LAUGH_MS - el) / 400) * Math.min(1, (1000 - cyc) / 200);
   ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round';
   if (ki === 2) {   // GROWL: one big, shuddering word
@@ -3776,8 +3802,8 @@ function entityOf(p, q, vId, now) {   // builds the draw entity from roster + sn
   const st = S.st[p.id] || null, e = { p, x: q[0], y: q[1], me: p.id === vId, now, st: st || {}, alpha: p.on ? 1 : .4, hook: null, hookLeft: 0, resProg: 0, prot: 0, recLeft: 0, flash: 0 };
   if (st) {
     if (st.s === 'hooked') { const h = S.map.hooks[st.hk]; if (h) { e.hook = h; e.x = h[0]; e.y = h[1]; }
-      e.hookLeft = Math.max(0, Math.min(1, (st.hookEnd - now) / CFG.HOOK_GRACE_MS));
-      e.resProg = Math.max(0, Math.min(1, (st.rp + (st.rpOn ? now - st.rpAt : 0)) / rescueMs())); }
+      e.hookLeft = Math.max(0, Math.min(1, hookRemain(st, now) / CFG.HOOK_GRACE_MS));
+      e.resProg = Math.max(0, Math.min(1, (st.rp + (st.rpOn ? (now - st.rpAt) * (st.rr || 1) : 0)) / rescueMs())); }
     if (st.protEnd > now) e.prot = 1;
     if (st.s === 'downed' && st.recEnd) e.recLeft = Math.max(0, Math.min(1, (st.recEnd - now) / (st.recTot || CFG.DOWN_RECOVER_MS)));
     if (st.flashAt && now - st.flashAt < CFG.HIT_FLASH_MS) e.flash = 1 - (now - st.flashAt) / CFG.HIT_FLASH_MS;
@@ -4149,7 +4175,7 @@ function drawGens(vx, vy, vw, vh, now, role, me) {   // sprites + effects in the
     if (x < vx - 130 || x > vx + vw + 130 || y < vy - 130 || y > vy + vh + 110) continue;
     const dis = e.st === 1 && e.disEnd > now, rep = e.st === 1 && !dis && e.rep > 0, state = e.st === 2 ? 'fix' : e.st === 0 ? 'locked' : dis ? 'dis' : rep ? 'rep' : 'open';
     const f = state === 'open' ? ((now / 650 | 0) + i) & 1 : state === 'rep' ? ((now / 60 | 0) + i) & 3 : state === 'dis' ? (now / 220 | 0) & 1 : 0;
-    const step = state === 'fix' ? 20 : state === 'locked' ? 0 : Math.min(20, Math.round(e.prog / 5));
+    const step = state === 'fix' ? 20 : state === 'locked' || role === 'killer' ? 0 : Math.min(20, Math.round(e.prog / 5));   // the killer never sees the needle move (repair progress is hidden from him)
     if (state === 'fix') { const a = .14 + .07 * Math.sin(now / 500 + i), R = 130, gr = ctx.createRadialGradient(x, y, 10, x, y, R);   // soft warm glow pulsing around it
       gr.addColorStop(0, `rgba(255,190,90,${a.toFixed(3)})`); gr.addColorStop(1, 'rgba(255,190,90,0)'); ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fill(); }
     ctx.fillStyle = 'rgba(0,0,0,.26)'; ctx.beginPath(); ctx.ellipse(x, y + 30, 64, 17, 0, 0, TAU); ctx.fill();   // soft dark shadow
@@ -4168,7 +4194,7 @@ function drawGens(vx, vy, vw, vh, now, role, me) {   // sprites + effects in the
       for (let a = 0; a < 2; a++) { let px = x - 36 + a * 8, py = y - 26 + a * 20; for (let q = 0; q < 3; q++) { const nx = px + 14 + gh(sd + a * 5 + q) * 8, ny = y - 26 + a * 20 + (gh(sd * 3 + a * 11 + q) - .5) * 24; arcSeg(px, py, nx, ny); px = nx; py = ny; } }   // blue-white electric arcs
       for (let q = 0; q < 4; q++) { ctx.fillStyle = q & 1 ? '#e8f8ff' : '#3fd0ff'; ctx.fillRect(x + Math.round((gh(sd + q * 3 + 50) - .5) * 110), y + Math.round((gh(sd + q * 3 + 51) - .5) * 70) - 10, 2, 2); }   // sparks
     }
-    if (e.st === 1 && e.prog > 0 && litPt(role, x, y)) {   // thin progress bar above the generator, only inside the viewer's light
+    if (e.st === 1 && e.prog > 0 && role !== 'killer' && litPt(role, x, y)) {   // thin progress bar (hidden from the killer) above the generator, only inside the viewer's light
       const bx = x - 32, by = y - 50; ctx.fillStyle = '#06080e'; ctx.fillRect(bx - 2, by - 2, 68, 9); ctx.fillStyle = dis ? '#ff5a4a' : '#ffc83a'; ctx.fillRect(bx, by, Math.round(64 * Math.min(1, e.prog / 100)), 5);
     }
     if (role === 'survivor' && Math.hypot(x - me[0], y - me[1]) <= CFG.GEN_LABEL_R) {   // pixel-text state label
@@ -4331,8 +4357,9 @@ function pinAt(me, b, q, col, ring, now) {   // marker at world point q: dot + p
   ctx.moveTo(px + Math.cos(an) * z * 1.3, py + Math.sin(an) * z * 1.3); ctx.lineTo(px + Math.cos(an + 2.5) * z, py + Math.sin(an + 2.5) * z); ctx.lineTo(px + Math.cos(an - 2.5) * z, py + Math.sin(an - 2.5) * z); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
 }
 function drawKillerSight(me, k, W, H, now, vRole) {
-  if (vRole !== 'killer' || !S.eg.on || S.phase !== 'hunt') return;
-  if (now % (CFG.EG_SEE_ON_MS + CFG.EG_SEE_OFF_MS) >= CFG.EG_SEE_ON_MS) return;   // hidden phase of the pulse
+  if (vRole !== 'killer' || !(S.eg.final || S.eg.solo) || S.phase !== 'hunt') return;   // monster form (full or LAST STAND)
+  const on = S.eg.final ? CFG.EG_SEE_ON_MS : CFG.SOLO_SEE_ON_MS, off = S.eg.final ? CFG.EG_SEE_OFF_MS : CFG.SOLO_SEE_OFF_MS;
+  if (((S.sightAt > 0 ? now - S.sightAt : now) % (on + off)) < off) return;   // hidden phase first, then shown
   const b = pinBox(me, k, W, H); ctx.save();
   for (const p of S.players) { if (p.role !== 'survivor') continue; if (((S.st[p.id] || {}).s || 'healthy') === 'dead') continue; const q = posOf(p.id); if (q) pinAt(me, b, q, p.color, 44, now); }
   ctx.restore();
@@ -4341,7 +4368,7 @@ function drawGatePins(me, k, W, H, now, vRole) {
   const gt = S.map && S.map.gates; if (!vRole || !S.eg.on || S.phase !== 'hunt' || !gt) return;
   const b = pinBox(me, k, W, H); ctx.save();
   for (const g of gt) { const z = gateZone(g, S.map); pinAt(me, b, [z[0] + z[2] / 2, z[1] + z[3] / 2], '#ffd27a', 60, now); }
-  const mp = vRole === 'survivor' && myState() !== 'dead' ? posOf(S.me) : null; let near = false;   // my escape progress: a ring that fills while I stand at a gate
+  const mp = vRole === 'survivor' && ['healthy', 'injured', 'downed'].includes(myState()) ? posOf(S.me) : null; let near = false;   // my escape progress: a ring that fills while I stand at a gate
   if (mp) for (const g of gt) if (inZone(gateZone(g, S.map), mp[0], mp[1])) { near = true; break; }
   if (near) { if (!S.gateT0) S.gateT0 = now; const u = Math.min(1, (now - S.gateT0) / CFG.GATE_HOLD_MS); ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(mp[0], mp[1], 38, 0, TAU); ctx.stroke(); ctx.strokeStyle = '#ffd27a'; ctx.beginPath(); ctx.arc(mp[0], mp[1], 38, -Math.PI / 2, -Math.PI / 2 + TAU * u); ctx.stroke(); } else S.gateT0 = 0;
   ctx.restore();
@@ -4552,6 +4579,29 @@ function drawDecoys(now, me, vw, vh, role, vId) {   // decoys look exactly like 
     ctx.globalAlpha = Math.max(0, Math.min(1, (c.end - now) / 500)); drawPlayer(e, 'healthy'); ctx.globalAlpha = 1;
   }
 }
+/* ---- Snake Oil afterimages: static green snapshots dropped along the path while the boost lasts; each stays where it was left (frozen pose) and fades out ---- */
+const SNK = new Map(), GHOST_FILTER = 'brightness(.9) sepia(1) hue-rotate(85deg) saturate(4)', GHOST_HAS_FILTER = typeof CanvasRenderingContext2D !== 'undefined' && 'filter' in CanvasRenderingContext2D.prototype, GHOST_LIFE = 480, GHOST_GAP = 30;
+function drawSnakeGhosts(p, q, s, vId, now) {
+  const f = S.fx2[p.id]; let h = SNK.get(p.id);
+  if (!f || !(f.snake > now) || (s !== 'healthy' && s !== 'injured')) { if (h) SNK.delete(p.id); return; }
+  if (!h) SNK.set(p.id, h = []);
+  const an = AN[p.id], last = h[h.length - 1];
+  if (an && an.sp > 25 && (!last || Math.hypot(last.x - q[0], last.y - q[1]) >= GHOST_GAP)) h.push({ x: q[0], y: q[1], t: now, face: an.face, sp: an.sp, ph: an.ph });   // a new snapshot every GHOST_GAP units of travel
+  while (h.length && now - h[0].t > GHOST_LIFE) h.shift();
+  const left = f.snake - now, life = (.4 + .6 * Math.min(1, left / CFG.SNAKE_MS)) * Math.min(1, left / 300);   // weaker as the boost decays
+  const sv = an ? { face: an.face, sp: an.sp, ph: an.ph } : null;
+  for (const g of h) {
+    const age = (now - g.t) / GHOST_LIFE; if (age >= 1 || Math.hypot(g.x - q[0], g.y - q[1]) < 12) continue;
+    ctx.save(); ctx.globalAlpha = (p.on ? 1 : .4) * life * .77 * (1 - age) * (1 - age * .4);
+    if (GHOST_HAS_FILTER) ctx.filter = GHOST_FILTER;
+    else { ctx.fillStyle = 'rgba(93,255,154,.35)'; ctx.beginPath(); ctx.ellipse(g.x, g.y + 4, 18, 26, 0, 0, TAU); ctx.fill(); }   // no canvas filters: plain green glow instead of a tinted copy
+    if (an) { an.face = g.face; an.sp = g.sp; an.ph = g.ph; }   // frozen pose (restored right after)
+    const ge = entityOf(p, [g.x, g.y], vId, g.t); ge.flash = 0; ge.me = false; GHOSTING = true;   // g.t as the clock: idle-frame choice stays fixed, animFor sees dt<0 and leaves the live animation alone
+    try { drawPlayer(ge, s); } finally { GHOSTING = false; }
+    ctx.restore();
+  }
+  if (an && sv) { an.face = sv.face; an.sp = sv.sp; an.ph = sv.ph; }
+}
 function drawStatusFx(e, q, now, pass) {   // pass 0 = under the sprite, pass 1 = on top
   const f = S.fx2[e.p.id]; if (!f) return; const x = e.x, y = e.y, rooted = f.root > now, slid = f.slide > now, adr = f.snake > now, crash = false;
   if (!rooted && !slid && !adr && !crash) return;
@@ -4733,8 +4783,9 @@ function updateAux(now, V) {
     el.classList.toggle('hidden', !p); }
   const showT = inGame && myRole() === 'survivor' && S.phase === 'hunt' && S.ts.set > 0, tt = showT ? `Tasks ${S.ts.done}/${S.ts.need} - Set ${S.ts.set}/2 - Permits ${S.ts.permits}` : '';
   if (tt !== UIC.thud) { UIC.thud = tt; $('thud').textContent = tt; $('thud').classList.toggle('hidden', !tt); }   // compact tasks line (survivors only)
-  const gt = inGame && S.phase === 'hunt' && myRole() ? (S.eg.on ? (S.eg.final ? 'THE KILLER IS UNLEASHED' : 'Dawn breaking ' + Math.max(0, Math.ceil((S.eg.endAt - now) / 1000)) + 's') : `Generators ${S.gs.fixed}/${CFG.GEN_NEEDED}`) : '';   // second chip (survivors: next to the tasks line; killer: under the top bar)
-  if (gt !== UIC.gchip) { UIC.gchip = gt; $('gchip').textContent = gt; $('gchip').classList.toggle('hidden', !gt); }
+  const gt = inGame && S.phase === 'hunt' && myRole() ? (S.eg.solo ? (myRole() === 'killer' ? 'HUNT THEM ' : 'SURVIVE ') + fmtT(Math.max(0, Math.ceil((S.eg.soloAt - now) / 1000))) + (S.eg.final ? ' - MONSTER FORM' : S.eg.on ? ' - Monster form in ' + Math.max(0, Math.ceil((S.eg.endAt - now) / 1000)) + 's' : '') : S.eg.on ? (S.eg.final ? 'MONSTER FORM' : 'Monster form in ' + Math.max(0, Math.ceil((S.eg.endAt - now) / 1000)) + 's') : `Generators ${S.gs.fixed}/${CFG.GEN_NEEDED}`) : '';   // second chip (survivors: next to the tasks line; killer: under the top bar)
+  const red = !!gt && S.eg.solo && myRole() === 'killer';
+  if (gt !== UIC.gchip || red !== UIC.gred) { UIC.gchip = gt; UIC.gred = red; $('gchip').textContent = gt; $('gchip').style.color = red ? '#ff3b3b' : ''; $('gchip').classList.toggle('hidden', !gt); }
   const anyChip = !!(tt || gt); if (anyChip !== UIC.chips) { UIC.chips = anyChip; $('chips').classList.toggle('hidden', !anyChip); }
   let gp = '';   // slim pill: "Repairing 43%" / "Kicking..."
   if (inGame && S.phase === 'hunt' && ctxHeld && !TK) {
@@ -4743,6 +4794,8 @@ function updateAux(now, V) {
       if (mp) gens.forEach((q, i) => { const e = S.gs.g[i], d = Math.hypot(q[0] - mp[0], q[1] - mp[1]); if (e && e.st === 1 && d <= bd) { bd = d; bi = i; } });
       if (bi >= 0) gp = 'Repairing ' + Math.round(S.gs.g[bi].prog) + '%'; } }
   if (gp !== UIC.gpill) { UIC.gpill = gp; $('gpill').textContent = gp; $('gpill').classList.toggle('hidden', !gp); }
+  const ls = inGame && S.phase === 'hunt' && S.lsAt > 0 && now - S.lsAt < 5000 ? (myRole() === 'killer' ? 'K' : myRole() === 'survivor' ? 'S' : 'O') : '';   // LAST STAND banner, 5 s
+  if (ls !== UIC.ls) { UIC.ls = ls; const el = $('lsann'); el.replaceChildren(); if (ls) { const h = document.createElement('b'), t = document.createElement('span'); h.textContent = 'LAST STAND'; t.textContent = ls === 'K' ? 'One survivor left. Hunt them down before the timer runs out!' : ls === 'S' ? "You're the last survivor. Just survive until the timer runs out!" : 'One survivor left. Can they survive?'; el.style.color = ls === 'K' ? '#ff3b3b' : '#ffe27a'; el.append(h, t); } el.classList.toggle('hidden', !ls); }
   const pw = inGame && S.phase === 'hunt' && S.powAt > 0 && now - S.powAt < 4000;   // GENERATORS POWERED, 4 s, everyone
   if (pw !== UIC.gann) { UIC.gann = pw; $('gann').classList.toggle('hidden', !pw); }
   const pn = inGame && S.phase === 'hunt' && S.pannAt > 0 && now - S.pannAt < 2000 ? S.pannTxt : '';   // permit announcement, 4 s, same look as GATES OPEN
@@ -4777,7 +4830,7 @@ function draw() {
   ctx.textAlign = 'center'; ctx.lineJoin = 'round'; ctx.font = (S.players.length > 6 ? 'bold 12px' : 'bold 15px') + ' system-ui,sans-serif';
   for (const p of S.players) { const q = posOf(p.id); if (!q || Math.abs(q[0] - me[0]) > vw || Math.abs(q[1] - me[1]) > vh || !canSee(role, vId, p.id)) continue;
     const s = (S.st[p.id] || {}).s || 'healthy'; if (s === 'dead') continue;
-    ctx.globalAlpha = p.on ? 1 : .4; const fe = entityOf(p, q, vId, now); drawStatusFx(fe, q, now, 0); drawPlayer(fe, s); drawStatusFx(fe, q, now, 1); ctx.globalAlpha = 1; }
+    ctx.globalAlpha = p.on ? 1 : .4; const fe = entityOf(p, q, vId, now); animFor(p.id, q[0], q[1], now); drawSnakeGhosts(p, q, s, vId, now); drawStatusFx(fe, q, now, 0); drawPlayer(fe, s); drawStatusFx(fe, q, now, 1); ctx.globalAlpha = 1; }
   drawDecoys(now, me, vw, vh, role, vId); drawFx(now, me, vw, vh, role, vId); drawIFx(now, me, vw, vh, role, false); drawSmokes(now, me, vw, vh);   // slash / impact bursts / floating text: under the darkness so lighting applies
   // ---- darkness on top, then warm beam glow, then eyes ----
   if (role) {
@@ -4813,8 +4866,15 @@ requestAnimationFrame(draw);
   r.setProperty('--jbase', CFG.JOY_BASE + 'px'); r.setProperty('--jknob', CFG.JOY_KNOB + 'px'); r.setProperty('--zw', CFG.JOY_ZONE_W * 100 + '%'); r.setProperty('--zh', CFG.JOY_ZONE_H * 100 + '%');
   readInsets();
 })();
+$('testN').onclick = () => {   // test room: cycle the room size 2..MAX_PLAYERS (you + bots)
+  if (!S.test || S.role !== 'host' || S.started) return;
+  const n = HP.size >= CFG.MAX_PLAYERS ? 2 : HP.size + 1;
+  while (HP.size > n) { const b = [...HP.values()].reverse().find(q => q.bot); if (!b) break; HP.delete(b.id); }
+  while (HP.size < n) { const b = addPlayer('Bot ' + (++botN), null, undefined, false); b.bot = true; }
+  pushRoster(); refreshUI();
+};
 $('testBtn').onclick = startTestRoom; $('testDiff').onclick = () => { botLevel = (botLevel + 1) % BOT_LEVELS.length; store.set('dotsBotLvl', botLevel); refreshUI(); }; document.querySelectorAll('#testRole button').forEach(b => b.onclick = () => { S.testRole = b.dataset.r; refreshUI(); });
-$('create').onclick = createRoom; $('join').onclick = joinRoom; $('cancelJoin').onclick = () => resetToMenu(''); $('leaveL').onclick = leave; $('start').onclick = startGame;
+$('create').onclick = createRoom; $('join').onclick = joinRoom; $('cancelJoin').onclick = () => resetToMenu(''); $('leaveL').onclick = leave; $('backT').onclick = leave; $('start').onclick = startGame;
 if (DEBUG) { const b = document.createElement('button'); b.id = 'addBot'; b.className = 'sec hidden'; b.textContent = 'Add test dot'; b.onclick = addBot; $('start').after(b); }
 $('menuBtn').onclick = () => menuOpen($('menuPanel').classList.contains('hidden'));
 $('menuBack').addEventListener('pointerdown', e => { e.preventDefault(); menuOpen(false); });
