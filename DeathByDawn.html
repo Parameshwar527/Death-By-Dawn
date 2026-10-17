@@ -1067,7 +1067,7 @@ const canMove = p => S.phase === 'hunt' || (S.phase === 'headstart' && p.role !=
 /* ---- CHARACTER SELECT (cosmetic, host-authoritative). S.pick[id] = { c, locked } on the host and on every client; an id with no entry is implicitly { c: id % CHARS.length, locked: false }.
    The final choice is written to p.ch (roster 'ch') when select ends. Wire: c->h {t:'pick',c} {t:'lock'}; h->all {t:'ch',id,c,locked}; late joiners get pk:[[id,c,locked]] in welcome/start. ---- */
 const dfltCh = id => ((id % CHARS.length) + CHARS.length) % CHARS.length;
-const KILLERS = [{ name: 'Jigsaw', flavor: 'Find them. Hang them. Before dawn.', col: '#ff4f57' }, { name: 'The Banshee', flavor: 'You will hear her before you see her.', col: '#3affd0' }, { name: 'The Demogorgon', flavor: 'It opens. It hungers. It always finds you.', col: '#d1454f' }, { name: 'Freaky Nikki', flavor: 'She quit hiding it. Smile back.', col: '#e0264a' }, { name: 'Huggy Wuggy', flavor: 'Come here. Give me a big, big hug.', col: '#2f6bff' }, { name: 'The Boiled One', flavor: 'Skin like a scalded wound. It never stops screaming.', col: '#ff3b30' }];   // cosmetic only: same stats
+const KILLERS = [{ name: 'Jigsaw', flavor: 'Find them. Hang them. Before dawn.', col: '#ff4f57' }, { name: 'The Banshee', flavor: 'You will hear her before you see her.', col: '#3affd0' }, { name: 'The Demogorgon', flavor: 'It opens. It hungers. It always finds you.', col: '#d1454f' }, { name: 'Freaky Nikki', flavor: 'She quit hiding it. Smile back.', col: '#e0264a' }, { name: 'Huggy Wuggy', flavor: 'Come here. Give me a big, big hug.', col: '#2f6bff' }, { name: 'The Boiled One', flavor: 'Skin like a scalded wound. It never stops screaming.', col: '#ff3b30' }, { name: 'The Skinwalker', flavor: 'It knows your voice. It never needed a face.', col: '#e9e6dc' }];   // cosmetic only: same stats
 const isKiller = id => { const q = S.players.find(x => x.id === id); return !!q && q.role === 'killer'; };
 const pickOf = id => S.pick[id] || { c: isKiller(id) ? 0 : dfltCh(id), locked: false };
 function pkPack() { const o = []; for (const id in S.pick) o.push([+id, S.pick[id].c, S.pick[id].locked ? 1 : 0]); return o; }
@@ -2649,8 +2649,10 @@ const sfxRecover = v => { sfxNoise(.32, v * .4, 'bandpass', 900, 1800, 0, .12); 
 const sfxDeath = v => { sfxTone(90, 28, 1.6, v, 'sine'); sfxNoise(.6, v * .5, 'lowpass', 1200, 100); metalHit(v * .55, 55, 3); sfxTone(330, 110, 1.8, v * .12, 'sawtooth'); sfxTone(349, 116, 1.8, v * .12, 'sawtooth'); };   // sacrificed: sub boom, deep gong, dissonant fall
 const sfxWarn = v => { sfxTone(150, 55, .2, v * .8, 'sine'); sfxTone(150, 55, .2, v * .8, 'sine', .24); };   // two ominous knocks: the hook timer passed halfway
 const sfxEyes = v => { sfxNoise(.8, v * .35, 'bandpass', 2500, 1500, 0, .35); sfxTrem(1480, .8, v * .16, 9); sfxTrem(2093, .8, v * .12, 11); };   // whisper + a trembling tritone
-function sfxLaugh(v, ki) {   // 'ha ha ha': three gruff voiced bursts, each a falling sawtooth through a noise rasp (the Demogorgon: two low guttural growls instead)
-  if (ki === 2) { for (let i = 0; i < 2; i++) { const d = .3 + i * .42; sfxTone(88 - i * 10, 46, .5, v * .5, 'sawtooth', d); sfxTone(132 - i * 14, 70, .42, v * .22, 'square', d + .02); sfxNoise(.5, v * .3, 'lowpass', 900, 160, d, .06); } return; }
+function sfxLaugh(v, ki) {
+  if (ki === 6) { for (let i = 0; i < 2; i++) { const d = .28 + i * .5; sfxTone(520 - i * 70, 300 - i * 40, .42, v * .2, 'sawtooth', d); sfxTone(547 - i * 70, 310 - i * 40, .42, v * .16, 'sawtooth', d + .01); sfxNoise(.4, v * .2, 'bandpass', 2400, 900, d, .05); sfxTone(96, 52, .5, v * .22, 'sine', d); } return; }   // the Skinwalker: two thin, detuned, borrowed-sounding wails over a low rumble   // 'ha ha ha': three gruff voiced bursts, each a falling sawtooth through a noise rasp (the Demogorgon: two low guttural growls instead)
+  if (ki === 2 || ki === 4) { for (let i = 0; i < 2; i++) { const d = .3 + i * .42; sfxTone(88 - i * 10, 46, .5, v * .5, 'sawtooth', d); sfxTone(132 - i * 14, 70, .42, v * .22, 'square', d + .02); sfxNoise(.5, v * .3, 'lowpass', 900, 160, d, .06); } return; }
+  if (ki === 1 || ki === 3) { const hi = ki === 1 ? 1.1 : 1; for (let i = 0; i < 3; i++) { const d = .3 + i * .22, b = (580 - i * 34) * hi; sfxTone(b, b * .72, .15, v * .24, 'triangle', d); sfxTone(b * 2, b * 1.45, .13, v * .1, 'sine', d); sfxTone(b * 1.01, b * .73, .13, v * .06, 'sawtooth', d); sfxNoise(.13, v * .15, 'bandpass', 3400, 2500, d, .015); } return; }   // Nikki and the Banshee: the same three bursts, but an octave-plus higher, soft and clear (triangle + sine instead of a buzzy saw) with a bright breath on top, like a light giggle
   for (let i = 0; i < 3; i++) { const d = .3 + i * .24; sfxTone(190 - i * 12, 120 - i * 8, .17, v * .4, 'sawtooth', d); sfxNoise(.15, v * .22, 'bandpass', 1100, 700, d, .02); }
 }
 function sfxReveal(role) {
@@ -3002,6 +3004,12 @@ function drawSlashSkin(ki, e, kp, now) {
     if (span > .02) { arc(R - 16 * K, tail, lead, 'rgba(47,107,255,.35)', 40 * K, fade); arc(R - 16 * K, tail, lead, 'rgba(140,175,255,.6)', 18 * K, fade); }
     for (let j = 0; j < 4; j++) { const an = lead + (j - 1.5) * .08, [xa, ya] = pt(an, R - 34 * K), [xb, yb] = pt(an, R + 2 * K); ctx.globalAlpha = vis; ctx.strokeStyle = '#7a5200'; ctx.lineWidth = 10 * K; ctx.beginPath(); ctx.moveTo(xa, ya); ctx.lineTo(xb, yb); ctx.stroke(); ctx.strokeStyle = '#ffc21a'; ctx.lineWidth = 7 * K; ctx.beginPath(); ctx.moveTo(xa, ya); ctx.lineTo(xb, yb); ctx.stroke(); }
     if (prog > .3) for (let j = 0; j < 5; j++) { const [x, y] = pt(lead - j * .13, R * (.74 + (j % 3) * .08)), sz = (4 + 8 * cl((prog - .3) * 2.5)) * K; ctx.globalAlpha = 1 - prog; ctx.strokeStyle = j & 1 ? '#fff0a0' : '#ffe36a'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x - sz, y); ctx.lineTo(x + sz, y); ctx.moveTo(x, y - sz); ctx.lineTo(x, y + sz); ctx.moveTo(x - sz * .6, y - sz * .6); ctx.lineTo(x + sz * .6, y + sz * .6); ctx.moveTo(x - sz * .6, y + sz * .6); ctx.lineTo(x + sz * .6, y - sz * .6); ctx.stroke(); }
+  } else if (ki === 6) {   // SKINWALKER: a pale bone-white rake. Five long thin claw lines of uneven length trail the arc, snapping out one after another, with fine tooth-like shards flung off the tips
+    cres('230,226,214', '255,253,246', 44, 13);
+    for (let i = 0; i < 5; i++) { const l2 = lead - i * .045, t2 = tail + span * (.12 + i * .03), r = R - (4 + i * 11) * K - (i & 1) * 6 * K; if (l2 - t2 < .02) continue;
+      arc(r, t2, l2, 'rgba(230,226,214,.35)', 7 * K, fade); arc(r, t2, l2, '#f4f1e6', 3 * K, fade); arc(r, t2 + (l2 - t2) * .6, l2, '#ffffff', 1.6, fade); }
+    glow(lead, R, 20 * K, '235,232,222', vis);
+    for (let j = 0; j < 9; j++) { const an = lead - j * .045, [x, y] = pt(an, R + 2 * K), d = (5 + prog * 26 + (j % 3) * 4) * K; ctx.globalAlpha = (1 - prog) * vis; ctx.strokeStyle = j & 1 ? '#ffffff' : '#d8d2bc'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + Math.cos(an + .35) * d, y + Math.sin(an + .35) * d); ctx.stroke(); }
   } else {   // THE BOILED ONE: a scalding lash. Fiery crescent, thick jittering whip-line, big steam clouds boiling off it
     cres('255,59,30', '255,220,170', 46, 16);
     if (span > .02) { const n = 18; for (const [col, lw, al, j] of [['rgba(255,59,30,.45)', 14 * K, 1, 1], ['#ff7a3a', 6 * K, 1, .8], ['#fff0d0', 2.6, 1, .5]]) { ctx.globalAlpha = al * fade; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
@@ -3698,8 +3706,72 @@ function huggyBmp(pose, f, lau, mon) {   // Huggy Wuggy: tall lanky blue plush, 
     }
   })));
 }
-function killerBmp(pose, f, lau, ki, mon) {   // ki: 0 = Jigsaw, 1 = The Banshee, 2 = The Demogorgon, 3 = Freaky Nikki, 4 = Huggy Wuggy, 5 = The Boiled One (same frame and size); mon = the gates-open monster form (every killer has one)
-  ki = ki | 0; if (ki === 1) return mon ? ghostMonBmp(pose, f, lau) : ghostBmp(pose, f, lau); if (ki === 0) return mon ? scaryMonBmp(pose, f, lau) : scaryBmp(pose, f, lau); if (ki === 2) return mon ? bloomMonBmp(pose, f, lau) : bloomBmp(pose, f, lau); if (ki === 3) return mon ? nikkiMonBmp(pose, f, lau) : nikkiBmp(pose, f, lau); if (ki === 4) return huggyBmp(pose, f, lau, mon); if (ki === 5) return boiledBmp(pose, f, lau, mon); return cachedSpr(`k${pose}${f}${lau ? 1 : 0}${ki}`, () => outlined(pxc(26, 32, r0 => {
+/* The Skinwalker: sprite. Taller than every other killer (38 px frame, 50 px in monster form) so it towers over the others. */
+const SKW_BURST = [   // the Skinwalker's face in monster form: a black maw ringed with teeth, split cracks bursting out through the blank skin. 13x11. k = black, g = gum, G = throat, t = tooth. [calm, wide]
+  ['...kkkkkkk...',
+   '...kkktttk...',
+   '.kkttkgtkkkk.',
+   'kkkkgggggttkk',
+   'kttggkkkggkkk',
+   'kttggkGkggttk',
+   'kkkggkkkggttk',
+   'kkttgggggkkkk',
+   '.kkkktgkttkk.',
+   '...ktttkkk...',
+   '...kkkkkkk...'],
+  ['.k..kkkkkk...',
+   '.kkkktkktkk..',
+   '.kttktkktkkkk',
+   '.kktgggggktkk',
+   'kttggkkkggkkk',
+   'kttgkkGkkgttk',
+   'kkkggkkkggttk',
+   'kktkgggggtkk.',
+   'kkkktkktkttk.',
+   '..kktkktkkkk.',
+   '...kkkkkk..k.']];
+function skinwalkerBmp(pose, f, lau, mon) {   // The Skinwalker: a tall, thin, smooth white humanoid with no face at all, arms hanging to the knees with long fingers. mon = gates-open form: the neck, torso and limbs stretch out of all proportion (one arm drags on the ground, the knees bend at different heights) and the blank face splits open into a burst of teeth
+  const H = mon ? 50 : 38, oy = H - 28;
+  return cachedSpr(`sk${pose}${f}${lau ? 1 : 0}${mon ? 1 : 0}`, () => outlined(pxc(mon ? 32 : 26, H, r0 => {
+    const ox = 3, r = (x, y, w, h, c) => r0(x + ox, y + oy, w, h, c);
+    const W1 = mon ? '#e6e8ef' : '#efeee8', W2 = mon ? '#bcc0ce' : '#cccbc4', W3 = mon ? '#8c92a6' : '#a3a29d', WH = '#ffffff';
+    const K = '#07040a', GUM = '#7a1020', GUM2 = '#3e0712', TH = '#fbf3d6', TH2 = '#bfb184';
+    const run = pose === 'run', sw = pose === 'swing', idle = !run && !sw, [lL, lR, aL, aR, by] = run ? KRUN[f & 3] : [0, 0, 0, 0, sw ? 0 : f & 1], bx = run || (sw && f) ? 1 : 0;
+    const hb = bx + (idle && f ? 1 : 0);   // idle: the head tips a pixel off-axis every other beat
+    if (!mon) {
+      const leg = (x, lift, out) => { const o = lift ? out : 0; r(x + o + bx, 14, 2, 13 - lift, W1); r(x + o + bx + 1, 14, 1, 13 - lift, W2); r(x + o + bx, 27 - lift, 4, 1, W2); };
+      // far arm: dangles to the knee, three long fingers
+      r(4 + bx, 3 + by, 1, 20 + aL, W3); r(3 + bx, 23 + by + aL, 1, 4, W3); r(5 + bx, 23 + by + aL, 1, 3, W3); r(4 + bx, 23 + by + aL, 1, 2, W3);
+      leg(6, lL, -1); leg(9, lR, 1);
+      r(6 + bx, 4 + by, 5, 10 - by, W1); r(6 + bx, 4 + by, 1, 10 - by, WH); r(10 + bx, 4 + by, 1, 10 - by, W2); r(7 + bx, 13, 3, 1, W2);   // long narrow torso
+      r(5 + bx, 2 + by, 7, 2, W1); r(5 + bx, 2 + by, 1, 1, WH); r(11 + bx, 3 + by, 1, 1, W2); r(7 + bx, 4 + by, 3, 1, W2);   // shoulders + collarbone shadow
+      r(7 + bx, 7 + by, 3, 1, W2); r(7 + bx, 9, 3, 1, W2);   // faint ribs
+      r(7 + bx, 0 + by, 3, 3, W2); r(8 + bx, 0 + by, 1, 3, W1);   // neck
+      [3, 5, 7, 7, 7, 7, 7, 5, 3].forEach((w, q) => { const x0 = 8 - (w >> 1) + hb, y = q - 9 + by; r(x0, y, w, 1, W1); if (w > 3) { r(x0, y, 1, 1, WH); r(x0 + w - 1, y, 1, 1, W2); } });   // smooth blank egg of a head: no face at all
+      if (sw && f === 0) { r(11 + bx, -3, 1, 8, W1); r(10 + bx, -7, 1, 4, W2); r(12 + bx, -7, 1, 4, W2); r(11 + bx, -6, 1, 3, W1); }   // wind-up: arm snaps overhead, fingers spread
+      else if (sw) { r(11 + bx, 4, 2, 3, W1); r(12 + bx, 5, 6, 1, W1); r(18 + bx, 4, 2, 3, W1); r(20 + bx, 3, 2, 1, W2); r(20 + bx, 5, 2, 1, W2); r(20 + bx, 7, 2, 1, W2); }   // strike: the arm whips out, fingers splayed
+      else { r(11 + bx, 3 + by, 1, 20 + aR, W1); r(11 + bx, 3 + by, 1, 3, WH); r(10 + bx, 23 + by + aR, 1, 3, W2); r(12 + bx, 23 + by + aR, 1, 4, W2); r(11 + bx, 23 + by + aR, 1, 2, W1); }
+    } else {
+      const leg = (x, lift, out, kn, ky) => { const o = lift ? out : 0, sx = x + kn + o + bx; r(x + o + bx, 13, 2, ky - 13, W1); r(x + o + bx + 1, 13, 1, ky - 13, W2); r(sx, ky, 2, 28 - ky - lift, W1); r(sx + 1, ky, 1, 28 - ky - lift, W2); r(x + o + bx + (kn < 0 ? -1 : 1), ky - 1, 1, 2, W3); r(sx - (kn < 0 ? 1 : 0), 27 - lift, 3, 1, W3); };   // knees jut out sideways, one far higher than the other
+      // far arm: far too long, jointed twice, knuckles and fingers dragging on the ground
+      r(4 + bx, 0 + by, 1, 11, W3); r(3 + bx, 11 + by, 1, 1, W3); r(2 + bx, 12 + by, 1, 10 + aL, W3); r(1 + bx, 21 + by + aL, 1, 1, W3); r(0 + bx, 24, 1, 4, W3); r(2 + bx, 24, 1, 4, W3); r(1 + bx, 22 + by + aL, 1, 5 - aL, W3);
+      leg(6, lL, -1, -2, 17); leg(9, lR, 1, 2, 21);
+      r(6 + bx, 1 + by, 5, 13 - by, W1); r(6 + bx, 1 + by, 1, 13 - by, WH); r(10 + bx, 1 + by, 1, 13 - by, W2); r(7 + bx, 13, 3, 1, W2);   // thin torso, ribs showing
+      for (let q = 3; q < 12; q += 2) r(7 + bx, q + by, q & 2 ? 3 : 2, 1, W3);
+      r(5 + bx, -1 + by, 7, 2, W1); r(5 + bx, -1 + by, 1, 1, WH); r(11 + bx, 0 + by, 1, 1, W2);
+      r(7 + bx, -8 + by, 3, 8, W2); r(8 + bx, -8 + by, 1, 8, W1); r(7 + bx, -5 + by, 1, 1, W3); r(9 + bx, -3 + by, 1, 1, W3);   // neck stretched to twice its length
+      [3, 5, 7, 9, 11, 11, 11, 11, 11, 11, 9, 7, 5, 3].forEach((w, q) => { const x0 = 8 - (w >> 1) + hb, y = q - 21 + by; r(x0, y, w, 1, W1); if (w > 3) { r(x0, y, 1, 1, WH); r(x0 + w - 1, y, 1, 1, W2); } });
+      // the burst of teeth, wider while he laughs or strikes
+      const big = lau || sw || (idle && f), map = SKW_BURST[big ? 1 : 0], PAL = { k: K, g: GUM, G: '#c01830', t: '#ffffff', u: TH2 };
+      for (let yy = 0; yy < 11; yy++) for (let xx = 0; xx < 13; xx++) { const c = PAL[map[yy][xx]]; if (c) r(2 + xx + hb, -19 + yy + by, 1, 1, c); }
+      if (sw && f === 0) { r(13 + bx, -11, 1, 12, W1); r(12 + bx, -19, 1, 8, W2); r(14 + bx, -19, 1, 8, W2); r(13 + bx, -17, 1, 6, W1); }   // wind-up: the arm shoots up past the head
+      else if (sw) { r(11 + bx, 2, 2, 3, W1); r(13, 3, 11, 1, W1); r(24, 1, 2, 5, W1); r(26, 0, 2, 1, W2); r(26, 2, 3, 1, W2); r(26, 4, 3, 1, W2); r(26, 6, 2, 1, W2); }   // strike: it reaches halfway across the screen
+      else { r(12 + bx, 0 + by, 1, 4, W1); r(12 + bx, 0 + by, 1, 2, WH); r(13 + bx, 4 + by, 1, 4, W1); r(14 + bx, 8 + by, 1, 12 + aR, W1); r(15 + bx, 19 + by + aR, 1, 1, W2); r(14 + bx, 20 + by + aR, 2, 2, W2); r(14 + bx, 22 + by + aR, 1, 5 - aR, W2); r(16 + bx, 20 + by + aR, 1, 6, W2); r(15 + bx, 22 + by + aR, 1, 4, W1); }   // near arm: the elbow juts out, then a hand with fingers a foot too long
+    }
+  })));
+}
+function killerBmp(pose, f, lau, ki, mon) {   // ki: 0 = Jigsaw, 1 = The Banshee, 2 = The Demogorgon, 3 = Freaky Nikki, 4 = Huggy Wuggy, 5 = The Boiled One (same frame and size), 6 = The Skinwalker (taller frame); mon = the gates-open monster form (every killer has one)
+  ki = ki | 0; if (ki === 1) return mon ? ghostMonBmp(pose, f, lau) : ghostBmp(pose, f, lau); if (ki === 0) return mon ? scaryMonBmp(pose, f, lau) : scaryBmp(pose, f, lau); if (ki === 2) return mon ? bloomMonBmp(pose, f, lau) : bloomBmp(pose, f, lau); if (ki === 3) return mon ? nikkiMonBmp(pose, f, lau) : nikkiBmp(pose, f, lau); if (ki === 4) return huggyBmp(pose, f, lau, mon); if (ki === 5) return boiledBmp(pose, f, lau, mon); if (ki === 6) return skinwalkerBmp(pose, f, lau, mon); return cachedSpr(`k${pose}${f}${lau ? 1 : 0}${ki}`, () => outlined(pxc(26, 32, r0 => {
     const ox = 2, oy = 4, r = (x, y, w, h, c) => r0(x + ox, y + oy, w, h, c);
     const H = ki === 1, COAT = H ? '#2d1f33' : '#23253f', COAT2 = H ? '#1c1223' : '#181a2d', COATH = H ? '#5a3a66' : '#3d4373', GLOVE = '#0e0e16', STEEL = H ? '#8f7a6a' : '#b9c0d6', EDGE = H ? '#cdb9a5' : '#eef2fb', WOOD = H ? '#46301f' : '#6b4a2e', RED = H ? '#2fd0c0' : '#8a1520', HAT = H ? '#160d1c' : '#14141f', MASK = H ? '#c9d3d6' : '#e4dccb', MASKS = H ? '#8c989d' : '#b6ae9c';
     const run = pose === 'run', sw = pose === 'swing', [lL, lR, aL, aR, by] = run ? KRUN[f & 3] : [0, 0, 0, 0, sw ? 0 : f & 1], bx = run || (sw && f) ? 1 : 0;
@@ -3866,6 +3938,7 @@ function atkAnim(ki, el) {
     case 3: return { dx: 9 * out, dy: 4 * Math.sin(Math.PI * s), rot: -.16 * back + .12 * out, sx: 1 - .3 * Math.sin(Math.PI * cl(s * 1.3)), sy: 1, ech: 0 };   // Nikki: leans back, then a quick hopping twist-slash
     case 4: return { dx: 13 * out - 2 * back, dy: 0, rot: -.07 * back + .24 * out, sx: 1 + .2 * out, sy: 1 + .12 * back - .1 * out, ech: 0 };   // Huggy: stretches tall, then slams down in a big grab
     case 5: return { dx: -5 * back + 19 * out + (s > 0 ? Math.sin(el / 13) * 1.5 * (1 - s) : 0), dy: 0, rot: -.22 * back + .26 * out, sx: 1, sy: 1 - .05 * out, ech: 2 };   // Boiled One: whiplash snap with a jittering recoil
+    case 6: return { dx: -4 * back + 21 * out, dy: 2 * back, rot: -.1 * back + .14 * out, sx: 1 - .1 * out, sy: 1 + .16 * back + .1 * out, ech: 2 };   // Skinwalker: draws itself up unnaturally tall, then stretches far out and snaps back
   }
   return null;
 }
@@ -3886,13 +3959,14 @@ function drawKiller(e) {
     ctx.save(); ctx.translate(px + am.dx * a.face, py - am.dy); ctx.rotate(am.rot * a.face); ctx.scale(am.sx, am.sy); blit(b, 0, 0, a.face, PSK, e.flash, 13); ctx.restore();
   } else blit(b, e.x + jx, e.y + 23 - bob, a.face, PSK, e.flash, 13);
   if (tfm && !reduceFx) { const u = tel / 1300; ctx.save(); ctx.globalAlpha = (1 - u) * .7 * (e.alpha === undefined ? 1 : e.alpha); ctx.strokeStyle = KILLERS[ki].col; ctx.lineWidth = 4 * (1 - u) + 1; ctx.beginPath(); ctx.ellipse(e.x, e.y + 20, 20 + u * 70, 8 + u * 28, 0, 0, TAU); ctx.stroke(); ctx.restore(); }   // shockwave ring in the killer's colour
-  if (lau) drawHaHa(e, lel, a.face, ki); else if (e.me) nameTag(e, 60); else killerTag(e);   // the name tag makes room for the laugh
+  const te = ki === 6 ? { ...e, y: e.y - ((mon ? 52 : 40) - 34) * PSK } : e;   // the Skinwalker is taller than the rest: its tags ride above its head
+  if (lau) drawHaHa(te, lel, a.face, ki); else if (e.me) nameTag(te, 60); else killerTag(te);   // the name tag makes room for the laugh
 }
 function drawHaHa(e, el, face, ki) {
   if (GHOSTING) return;   // comic \"HA HA HA!\" bubbles popping above the killer, repeating once a second until the laugh ends; the Demogorgon growls instead
   const cyc = el % 1000, out = Math.min(1, (CFG.LAUGH_MS - el) / 400) * Math.min(1, (1000 - cyc) / 200);
   ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round';
-  if (ki === 2) {   // GROWL: one big, shuddering word
+  if (ki === 2 || ki === 4) {   // GROWL: one big, shuddering word
     const pop = Math.min(1, cyc / 130), sc = (pop < 1 ? .4 + pop * .8 : 1.2 + .06 * Math.sin(cyc / 60)), sh = cyc < 700 ? 1.6 : 0;
     ctx.translate(e.x + face * 4 + (sh ? Math.sin(cyc / 25) * sh : 0), e.y - 56 - Math.min(cyc, 600) * .015 + (sh ? Math.cos(cyc / 31) * sh : 0)); ctx.rotate(Math.sin(cyc / 90) * .06); ctx.scale(sc, sc);
     ctx.font = '900 26px \"Impact\",\"Arial Black\",system-ui,sans-serif';
@@ -3900,12 +3974,22 @@ function drawHaHa(e, el, face, ki) {
     ctx.fillStyle = `rgba(255,96,48,${out.toFixed(3)})`; ctx.fillText('GROWL', 0, 0);
     ctx.restore(); return;
   }
+  const sk = ki === 6;   // the Skinwalker pops a single white comic bubble: I’M FRIEND, once per sequence
+  if (sk) {   // I’M FRIEND: the letters pop in one after another (each with a little hop and wobble), then the whole word fades together, so it stays readable
+    const T = 'I’M FRIEND'; ctx.font = '900 20px \"Comic Sans MS\",\"Chalkboard SE\",\"Marker Felt\",system-ui,sans-serif'; ctx.lineWidth = 5;
+    const tw = ctx.measureText(T).width; ctx.translate(e.x + face * 6, e.y - 56 - Math.min(cyc, 600) * .02); ctx.rotate(0); ctx.textAlign = 'center';
+    for (let k = 0; k < T.length; k++) { if (T[k] === ' ') continue; const u = cyc - k * 70; if (u < 0) continue;
+      const x0 = ctx.measureText(T.slice(0, k)).width - tw / 2, w = ctx.measureText(T[k]).width, pop = Math.min(1, u / 110), sc = pop < 1 ? .4 + pop : 1 + .08 * Math.sin(u / 70);
+      ctx.save(); ctx.translate(x0 + w / 2, -Math.sin(Math.min(1, u / 160) * Math.PI) * 4); ctx.rotate(Math.sin(u / 80 + k) * .08); ctx.scale(sc, sc);
+      ctx.strokeStyle = `rgba(40,0,0,${out.toFixed(3)})`; ctx.strokeText(T[k], 0, 0); ctx.fillStyle = `rgba(255,255,255,${out.toFixed(3)})`; ctx.fillText(T[k], 0, 0); ctx.restore(); }
+    ctx.restore(); return;
+  }
   for (let i = 0; i < 3; i++) {
-    const u = cyc - i * 190; if (u < 0) continue; const pop = Math.min(1, u / 110), sc = pop < 1 ? .4 + pop : 1 + .08 * Math.sin(u / 70), big = i === 2;
-    ctx.save(); ctx.translate(e.x + face * 6 + (i - 1) * 32, e.y - 54 - (i === 1 ? 8 : 0) - Math.min(u, 600) * .02); ctx.rotate((i - 1) * .22 + Math.sin(u / 80) * .08); ctx.scale(sc, sc);
-    ctx.font = '900 ' + (big ? 28 : 22) + 'px \"Comic Sans MS\",\"Chalkboard SE\",\"Marker Felt\",system-ui,sans-serif';
-    ctx.lineWidth = 5; ctx.strokeStyle = `rgba(40,0,0,${out.toFixed(3)})`; ctx.strokeText(big ? 'HA!' : 'HA', 0, 0);
-    ctx.fillStyle = `rgba(255,214,58,${out.toFixed(3)})`; ctx.fillText(big ? 'HA!' : 'HA', 0, 0); ctx.restore();
+    const u = cyc - i * 190; if (u < 0 || (sk && i)) continue; const pop = Math.min(1, u / 110), sc = pop < 1 ? .4 + pop : 1 + .08 * Math.sin(u / 70), big = i === 2;
+    ctx.save(); ctx.translate(e.x + face * 6 + (sk ? 0 : (i - 1) * 32), e.y - (sk ? 56 : 54 + (i === 1 ? 8 : 0)) - Math.min(u, 600) * .02); ctx.rotate((sk ? -.08 : (i - 1) * .22) + Math.sin(u / 80) * .08); ctx.scale(sc, sc);
+    ctx.font = '900 ' + (sk ? 12 : (big ? 28 : 22)) + 'px \"Comic Sans MS\",\"Chalkboard SE\",\"Marker Felt\",system-ui,sans-serif';
+    ctx.lineWidth = 5; ctx.strokeStyle = `rgba(40,0,0,${out.toFixed(3)})`; ctx.strokeText(sk ? 'I’M FRIEND' : big ? 'HA!' : 'HA', 0, 0);
+    ctx.fillStyle = sk ? `rgba(255,255,255,${out.toFixed(3)})` : `rgba(255,214,58,${out.toFixed(3)})`; ctx.fillText(sk ? 'I’M FRIEND' : big ? 'HA!' : 'HA', 0, 0); ctx.restore();
   }
   ctx.restore();
 }
